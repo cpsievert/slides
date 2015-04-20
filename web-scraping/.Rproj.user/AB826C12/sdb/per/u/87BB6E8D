@@ -1,0 +1,18 @@
+{
+    "contents" : "servr::httd(\"/Users/cpsievert/Desktop/github/local/cpsievert.github.com/slides/web-scraping/\")\n",
+    "created" : 1416245159305.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "118174897",
+    "id" : "87BB6E8D",
+    "lastKnownWriteTime" : 38654705408,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
