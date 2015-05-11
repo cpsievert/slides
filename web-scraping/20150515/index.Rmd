@@ -1,0 +1,38 @@
+---
+title: "Web scraping in R"
+author: "Carson Sievert"
+date: "May 15, 2015"
+output: html_document
+output: 
+  ioslides_presentation:
+          incremental: true
+          widescreen: true
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+library(knitr)
+opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
+```
+
+## Data is messy (especially on the web)!
+
+* As statisticians, we typically think of data in a [tidy](http://vita.had.co.nz/papers/tidy-data.pdf) (i.e., tabular) format. That is
+    * rows == observations (often sharing an observational unit)
+    * columns == various observational attributes
+* This is a convenient statistical modeling framework, but data hardly ever begins in this tidy format (especially on the web).
+* This talk will provide a quick overview of popular methods for acquiring info/data from the web using R.
+* If you get nothing else from this talk, just remember to...
+
+---
+
+<div align = "center">
+  <img src = "view-the-source.jpg" width = "1000" height = "600">
+</div>
+
+## Motivating Example
+
+<iframe src = "http://en.wikipedia.org/wiki/Table_%28information%29" width = "800px" height = "600px"></iframe>
+
+---
+
+
