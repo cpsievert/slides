@@ -1,4 +1,7 @@
-.Rproj.user
-.Rhistory
-.RData
+*.Rproj.user
+*.Rhistory
+*.RData
 shiny/
+*index_cache/
+*cache/
+
