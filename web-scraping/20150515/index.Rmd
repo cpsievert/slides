@@ -39,13 +39,13 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
  <img src = "trapped.gif" width = "750" height = "500">
 </div>
 
-## Leads to faceplant?
+## Leads to quitting?
 
 <div align = "center">
- <img src = "faceplant.gif" width = "750" height = "500">
+ <img src = "quit.gif" width = "500" height = "500">
 </div>
 
-## Data is messy! {.build}
+## Let's face it, data is messy! {.build}
 
 > - In statistical modeling, we typically assume data is [tidy](http://vita.had.co.nz/papers/tidy-data.pdf).
 > - That is, data appears in a tabular form where
@@ -53,7 +53,7 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
     * 1 column == 1 variable (observational attribute)
 > - In practice, data hardly ever begins in this way (especially on the web).
 > - [Some have estimated](http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0) **80% of the data science workflow is wrangling messy data** (and 20% on actual analysis). Yet, **these skills are not typically taught in the classroom**.
-> - We _have_ to do better and _stop avoiding_ the issue.
+> - We _have_ to do better.
 > - With the right tools, we _can_ do better.
 > - It helps if you know a bit about the web. If you don't, just remember to
 
@@ -131,7 +131,7 @@ This is a nice format? Really? Yes, really. It's the format used to render table
 </table> 
 ```
 
-# What if data isn't packaged neatly in `<table>`?
+# What about non-`<table>` data?
 
 ## (selectorgadget + rvest) to the rescue! {.build}
 
@@ -151,27 +151,14 @@ html("http://www.sec.gov/litigation/suspensions.shtml") %>%
     html_nodes("p+ table a") %>% html_attr(name="href") %>% head
 ```
 
-## Your turn {.build}
-
-> - Extract links to the personal websites of all ISU Statistics Faculty -- <http://www.stat.iastate.edu/people/faculty/>
-> - __Hint__: selectorgadget will be useful here!
-
-## Your turn solution
-
-```{r}
-html("http://www.stat.iastate.edu/people/faculty/") %>%
-  html_nodes("#content a") %>% html_attr(name="href") -> hrefs
-head(hrefs)
-```
-
 # What about _dynamic_ web pages?
 
-## Web APIs {.build}
+## First, a note on Web APIs {.build}
 
 > - Many popular dynamic sites have Web APIs (for example, Facebook, Twitter, YouTube, GitHub, etc). Use them!
 > - A Web API is just a set of rules/standards for interacting with a Web server.
 > - APIs typically require knowledge of HTTP, but a single HTTP verb (`GET`) is usually what you want.
-> - For example, 
+> - With [httr](http://cran.r-project.org/web/packages/httr/index.html), working APIs is a breeze: 
 
 ```{r}
 library(httr)
@@ -179,36 +166,63 @@ me <- GET("https://api.github.com/users/cpsievert")
 content(me)[c("name", "company")]
 ```
 
-## Accessing the DOM
+## Scraping Dynamic Pages
 
-Useful if you need access to the [DOM](http://en.wikipedia.org/wiki/Document_Object_Model), not just the page source.
+<iframe src = "http://www.techstars.com/companies/stats/" width = "800px" height = "600px"></iframe>
+
+## rvest to the rescue? {.build}
 
 ```{r, eval = FALSE}
-library(XML)
+library(rvest)
+html("http://www.techstars.com/companies/stats/") %>%
+  html_node(".table75") %>% html_table()
+```
+
+```
+Error in UseMethod("html_table") : 
+  no applicable method for 'html_table' applied to an object of class "NULL"
+```
+
+Our technique from earlier doesn't work, why not?
+
+## Browser <-> Web Server
+
+<div align = "center">
+ <img src = "dom.png" width = "750" height = "500">
+</div>
+
+---
+
+[RSelenium](http://cran.r-project.org/web/packages/RSelenium/index.html) allows us to control _any_ web browser we want from the R console (so we can access to the DOM!!).
+
+```{r, eval = FALSE}
 library(RSelenium)
-remDr <- remoteDriver(browserName = 'firefox')
+pJS <- phantom()
+remDr <- remoteDriver(browserName = 'phantomjs')
 remDr$open()
-remDr$navigate("http://www.cbssports.com/collegebasketball/gametracker/live/NCAAB_20140407_UK@UCONN")
+remDr$navigate("http://www.techstars.com/companies/stats/")
+src <- remDr$getPageSource()[[1]]
+library(rvest)
+html(src) %>% html_node(".table75") %>% html_table()
+```
 
-src <- remDr$getPageSource()
-doc <- htmlParse(src, asText = TRUE)
-nodes <- getNodeSet(doc, path = "//div[@class='court']")
+```
+    Status Number of Companies Percentage
+1   Active                 400     76.34%
+2 Acquired                  68     12.98%
+3   Failed                  58     11.07%
+```
 
-kids <- sapply(nodes, xmlChildren)
-recs <- sapply(kids, xmlAttrs)
-head(t(recs))
-
+```{r, eval = FALSE}
 pJS$stop()
 ```
 
-> - We use RSelenium to test whether [animint](https://github.com/tdhock/animint) interactive plots behave correctly.
-> - I've also used it to scrape websites that have to be rendered in a browser in order to access certain info.
+# What about non-HTML data?
 
 ## Common data exchange formats
 
-> - So far we've briefly covered how to extract information from HTML pages.
 > - HTML is great for _sharing content_ between _people_, but it isn't great for _exchanging data_ between _machines_.
-> - There are _a ton_ of different ways to exchange data over the web, but by far the most popular ones are XML and JSON.
+> - There are _a ton_ of other ways to exchange data over the web, but by far the most popular ones are XML and JSON.
 
 ## What is XML?
 
@@ -231,7 +245,7 @@ XML is a markup language that looks very similar to HTML.
 > - What is are the observational units here? How many observations in total?
 > - Two units and 6 total observations (4 vehicles and 2 drivers).
 
----
+## XML2R {.build}
 
 [XML2R](https://github.com/cpsievert/XML2R) is a framework to simplify acquistion of tabular/relational XML.
 
@@ -248,23 +262,23 @@ obs <- XML2Obs("http://bit.ly/mario-xml", quiet = TRUE)
 table(names(obs))
 ```
 
-* The main idea of __XML2R__ is to coerce the _nested_ structure of XML as a _flat_ list of observations.
+* The main idea of __XML2R__ is to coerce XML into a _flat_ list of observations.
 * The list names track the "observational unit".
 * The list values track the "observational attributes".
 
 ---
 
 ```{r}
-obs # named list of matrices. Each matrix is *guaranteed* to have 1 row.
+obs # named list of observations
 ```
 
 ---
 
 ```{r}
-collapse_obs(obs) # groups observations by their name/unit
+collapse_obs(obs) # group into table(s) by observational name/unit
 ```
 
-> - What information have I lost by combining observations of the same unit into the same table?
+> - What information have I lost?
 > - I can't map vehicles to the drivers!
 
 ---
@@ -283,42 +297,22 @@ tabs <- collapse_obs(obs)
 merge(tabs[[1]], tabs[[2]], by = "name")
 ```
 
-## Your turn
 
-Turn this XML file into a set of tables (using XML2R) -- <http://gd2.mlb.com/components/game/mlb/year_2011/month_04/day_04/gid_2011_04_04_minmlb_nyamlb_1/players.xml>
+## What about JSON? {.build}
 
-## Your turn 'solution'
-
-Using `add_key()` is optional here, but it removes the need to hang on to the "game" table.
-
-```{r, results='hide'}
-library(magrittr)
-XML2Obs("http://gd2.mlb.com/components/game/mlb/year_2011/month_04/day_04/gid_2011_04_04_minmlb_nyamlb_1/players.xml") %>% 
-  add_key(parent = "game", recycle = "venue") %>% 
-  add_key(parent = "game", recycle = "date") %>%
-  collapse_obs -> tabs
-```
-
-```{r}
-tabs[["game//team//player"]][1:5, c("first", "last", "venue", "date")]
-```
-
-## What about JSON?
-
+> - JSON is quickly becoming _the_ format for data on the web.
 > - JavaScript Object Notation (JSON) is comprised of two components:
     * arrays => [value1, value2]
     * objects => {"key1": value1, "key2": [value2, value3]} 
-> - NOTE: you can also have arrays of objects!
 > - The preferred R package for R <=> JSON conversion has long been [RJSONIO](http://cran.r-project.org/web/packages/RJSONIO/index.html)
 > - However, [jsonlite](http://cran.r-project.org/web/packages/jsonlite/index.html) is gaining a lot of momentum/attention.
-> - In fact, [shiny will soon be moving from RJSONIO to jsonlite](https://github.com/rstudio/shiny/issues/572)
+> - In fact, [shiny will soon be moving from RJSONIO to jsonlite](https://github.com/rstudio/shiny/issues/572).
 
 ## Package downloads from RStudio's CRAN mirror
 
 <div align="center">
-  <img src = "json.png" width = "1000" height = "500">
+  <img src = "cran.png" width = "1000" height = "500">
 </div>
-
 
 ## Back to Mariokart {.smaller}
 
@@ -383,12 +377,18 @@ How do we get two tables (with a common id) like the XML example?
 # this mapply statement is essentially equivalent to add_key
 vehicles <- mapply(function(x, y) cbind(x, driver = y), 
                    mario$vehicles, mario$driver, SIMPLIFY = FALSE)
-rbind.pages(vehicles)
+Reduce(rbind, vehicles)
 mario[!grepl("vehicle", names(mario))]
 ```
 
-## Thanks! Any questions?
+## Thanks for having me!
+
+* Contact:
+    * https://twitter.com/cpsievert
+    * https://github.com/cpsievert
+* R got a new logo!
 
 <div align = "center">
-  <img src = "http://mlblogsjaneheller.files.wordpress.com/2010/09/wave1.gif" width = "400" height = "400">
+ <img src = "Rlogo.png" width = "300" height = "300">
 </div>
+* 
