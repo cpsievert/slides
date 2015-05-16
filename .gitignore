@@ -5,3 +5,4 @@ shiny/
 *index_cache/
 *cache/
 
+.Rproj.user

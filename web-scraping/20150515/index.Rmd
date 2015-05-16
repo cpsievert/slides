@@ -139,16 +139,20 @@ This is a nice format? Really? Yes, really. It's the format used to render table
 > - With some user feedback, the gadget find out the [CSS selector](http://www.w3.org/TR/2011/REC-css3-selectors-20110929/) that returns the highlighted page elements.
 > - Let's try it out on [this page](http://www.sec.gov/litigation/suspensions.shtml)
 
-## Extracting links to reports
+## Extracting links to download reports
 
 ```{r}
-html("http://www.sec.gov/litigation/suspensions.shtml") %>%
-    html_nodes("p+ table a") %>% head
+domain <- "http://www.sec.gov"
+susp <- file.path(domain, "litigation/suspensions.shtml")
+hrefs <- html(susp) %>% html_nodes("p+ table a") %>% html_attr(name = "href")
+tail(hrefs)
 ```
 
-```{r}
-html("http://www.sec.gov/litigation/suspensions.shtml") %>%
-    html_nodes("p+ table a") %>% html_attr(name="href") %>% head
+```{r, eval = FALSE}
+# download all the pdfs!
+hrefs <- hrefs[!is.na(hrefs)]
+pdfs <- paste0(domain, hrefs)
+mapply(download.file, pdfs, basename(pdfs))
 ```
 
 # What about _dynamic_ web pages?
@@ -193,7 +197,7 @@ Our technique from earlier doesn't work, why not?
 
 ---
 
-[RSelenium](http://cran.r-project.org/web/packages/RSelenium/index.html) allows us to control _any_ web browser we want from the R console (so we can access to the DOM!!).
+[RSelenium](http://cran.r-project.org/web/packages/RSelenium/index.html) allows us to control _any_ web browser we want from the R console (so we can access the DOM!!).
 
 ```{r, eval = FALSE}
 library(RSelenium)
