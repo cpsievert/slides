@@ -197,17 +197,13 @@ Our technique from earlier doesn't work, why not?
 
 ---
 
-[RSelenium](http://cran.r-project.org/web/packages/RSelenium/index.html) allows us to control _any_ web browser we want from the R console (so we can access the DOM!!).
+[rdom](https://github.com/cpsievert/rdom) can return the DOM as HTML:
 
 ```{r, eval = FALSE}
-library(RSelenium)
-pJS <- phantom()
-remDr <- remoteDriver(browserName = 'phantomjs')
-remDr$open()
-remDr$navigate("http://www.techstars.com/companies/stats/")
-src <- remDr$getPageSource()[[1]]
-library(rvest)
-html(src) %>% html_node(".table75") %>% html_table()
+# devtools::install_github("cpsievert/rdom")
+library(rdom)
+rdom("http://www.techstars.com/companies/stats/") %>%
+  html_node(".table75") %>% html_table()
 ```
 
 ```
@@ -215,10 +211,6 @@ html(src) %>% html_node(".table75") %>% html_table()
 1   Active                 400     76.34%
 2 Acquired                  68     12.98%
 3   Failed                  58     11.07%
-```
-
-```{r, eval = FALSE}
-pJS$stop()
 ```
 
 # What about non-HTML data?
