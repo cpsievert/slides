@@ -237,6 +237,26 @@ methods(pander)
 
 * Look through the list of pander methods. Can you apply any of the methods that we haven't discussed? We just saw `pander.lm` and `pander.anova`.
 
+## Interactive Stuff
+
+```{r}
+# install.packages("DT")
+library(DT)
+library(ggplot2)
+d <- diamonds[sample(nrow(diamonds), 1000), ]
+datatable(d)
+```
+
+---
+
+```{r}
+# devtools::install_github("ropensci/plotly@carson-dsl")
+library(plotly)
+p <- ggplot(data = d, aes(x = carat, y = price, colour = clarity)) +
+  geom_point(aes(text = cut), size = 3) + geom_smooth() + facet_wrap(~ clarity)
+ggplotly(p)
+```
+
 ## Reactive documents with shiny!
 
 If you haven't already: `install.packages("shiny")`
