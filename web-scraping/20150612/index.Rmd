@@ -45,17 +45,27 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
  <img src = "quit.gif" width = "500" height = "500">
 </div>
 
-## Let's face it, data is messy! {.build}
+## A web of data
+
+> - In 2008, [an estimated](http://yz.mit.edu/papers/webtables-vldb08.pdf) __154 million HTML tables__ (out of the 14.1 billion) contain 'high quality relational data'!!!
+> - Hard to quantify how much more exists outside of HTML Tables, but there is [an estimate](https://cs.uwaterloo.ca/~x4chu/SIGMOD2015_1.pdf) of __at least 30 million lists__ with 'high quality relational data'.
+> - A growing number of websites/companies [provide programmatic access](http://www.programmableweb.com/category/all/apis?order=field_popularity) to their data/services via web APIs (that data typically comes in XML/JSON format).
+
+## Before scraping, do some googling!
+
+> - If the resource is well-known, someone else has probably built a tool which provides easier access to the data.
+> - I wrote [pitchRx](http://cran.r-project.org/web/packages/pitchRx/) which downloads, parses, cleans, and transforms XML data for a specific baseball data resource. Just give it start/end dates.
+> - [ropensci](https://ropensci.org/) has a [ton of R packages](https://ropensci.org/packages/) for scientific data sources.
+> - The [Web Technologies and Services CRAN Task View](http://cran.r-project.org/web/views/WebTechnologies.html) is a concise overview of various tools for working with data that lives on the web.
+
+## A web of _messy_ data!
 
 > - In statistical modeling, we typically assume data is [tidy](http://vita.had.co.nz/papers/tidy-data.pdf).
 > - That is, data appears in a tabular form where
     * 1 row == 1 observation
     * 1 column == 1 variable (observational attribute)
-> - In practice, data hardly ever begins in this way (especially on the web).
-> - [Some have estimated](http://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html?_r=0) **80% of the data science workflow is wrangling messy data** (and 20% on actual analysis). Yet, **these skills are not typically taught in the classroom**.
-> - We _have_ to do better.
-> - With the right tools, we _can_ do better.
-> - It helps if you know a bit about the web. If you don't, just remember to
+> - Parsing HTML/XML/JSON is easy; but navigating, cleaning, extracting relevants bits, and transforming it into a tidy form is _not easy_.
+> - Knowing a bit about modern tools & web technologies makes it _much_ easier.
 
 ---
 
@@ -66,6 +76,7 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
 ## Motivating Example
 
 <iframe src = "http://en.wikipedia.org/wiki/Table_%28information%29" width = "800px" height = "600px"></iframe>
+
 
 ## Inspecting elements
 
@@ -83,57 +94,48 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
 
 [rvest](http://cran.r-project.org/web/packages/rvest/index.html) makes scraping HTML pages super easy.
 
-```{r, eval=FALSE, echo=FALSE}
-library(XML)
-doc <- htmlParse("http://en.wikipedia.org/wiki/Table_(information)")
-node <- getNodeSet(doc, "//table[@class='wikitable']")
-readHTMLTable(node[[1]])
-```
-
 ```{r}
 library(rvest)
 # First, grab the page source
-html("http://en.wikipedia.org/wiki/Table_(information)") %>%
-  # then extract the first node with class of wikitable
-  html_node(".wikitable") %>% 
-  # then convert the HTML table into a data frame
-  html_table()
+src <- html("http://en.wikipedia.org/wiki/Table_(information)")
+# extract the first element with class of wikitable
+node <- html_node(src, ".wikitable")
+# convert that <table> element to a data frame
+html_table(node)
 ```
 
-* __Note__: `html_table()` only works on 'nicely' formatted HTML tables.
+> - `html_table()` only works on a single `<table>` element.
+> - `".wikitable"` is a CSS selector which says: "grab any element with a class equal to wikitable".
 
 ---
 
-This is a nice format? Really? Yes, really. It's the format used to render tables on webpages.
+__rvest__ is designed to be pipeable.
 
-```html
-<table class="wikitable">
-  <tr>
-    <th>First name</th>
-    <th>Last name</th>
-    <th>Age</th>
-  </tr>
-  <tr>
-    <td>Bielat</td>
-    <td>Adamczak</td>
-    <td>24</td>
-  </tr>
-  <tr>
-    <td>Blaszczyk</td>
-    <td>Kostrzewski</td>
-    <td>25</td>
-  </tr>
-  <tr>
-    <td>Olatunkboh</td>
-    <td>Chijiaku</td>
-    <td>22</td>
-  </tr>
-</table> 
+```{r}
+html("http://en.wikipedia.org/wiki/Table_(information)") %>%
+  html_node(".wikitable") %>% html_table()
 ```
+
+> - Much easier to read/understand!
+
+---
+
+
+## Your Turn 1
+
+Navigate [this page](http://www.wunderground.com/history/airport/KVAY/2015/2/17/DailyHistory.html?req_city=Cherry+Hill&req_state=NJ&req_statename=New+Jersey&reqdb.zip=08002&reqdb.magic=1&reqdb.wmo=99999&MR=1) and try the following:
+
+__Easy__: Grab the table at the bottom of the page (hint: instead of grabbing a node by class with `html_node(".class")`, you can grab by id with `html_node("#id")`)
+
+__Medium__: Grab the actual mean, max, and min temperature.
+
+__Hard__: Grab the weather history graph and write the figure to disk (`download.file()` may be helpful here). 
+
+(kudos to Hadley Wickham for the example)
 
 # What about non-`<table>` data?
 
-## (selectorgadget + rvest) to the rescue! {.build}
+## (selectorgadget + rvest) to the rescue!
 
 > - [Selectorgadget](http://selectorgadget.com/) is a [Chrome browser extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb?hl=en) for quickly extracting desired parts of an HTML page.
 > - With some user feedback, the gadget find out the [CSS selector](http://www.w3.org/TR/2011/REC-css3-selectors-20110929/) that returns the highlighted page elements.
@@ -155,39 +157,21 @@ pdfs <- paste0(domain, hrefs)
 mapply(download.file, pdfs, basename(pdfs))
 ```
 
-# What about _dynamic_ web pages?
+## Your Turn 2
 
-## First, a note on Web APIs {.build}
+Nativigate to Wikipedia's [list of data structures](http://en.wikipedia.org/wiki/List_of_data_structures) use SelectorGadget + rvest to do the following:
 
-> - Many popular dynamic sites have Web APIs (for example, Facebook, Twitter, YouTube, GitHub, etc). Use them!
-> - A Web API is just a set of rules/standards for interacting with a Web server.
-> - APIs typically require knowledge of HTTP, but a single HTTP verb (`GET`) is usually what you want.
-> - With [httr](http://cran.r-project.org/web/packages/httr/index.html), working APIs is a breeze: 
+1. Obtain a list of Primitive types
+2. Obtain a list of the different Array types
+
+# Scraping _dynamic_ web pages
+
+---
 
 ```{r}
-library(httr)
-me <- GET("https://api.github.com/users/cpsievert")
-content(me)[c("name", "company")]
+# returns the HTML page source, which is _static_ (no table!)
+rvest::html("http://bl.ocks.org/cpsievert/raw/2a9fb8f504cd56e9e8e3/")
 ```
-
-## Scraping Dynamic Pages
-
-<iframe src = "http://www.techstars.com/companies/stats/" width = "800px" height = "600px"></iframe>
-
-## rvest to the rescue? {.build}
-
-```{r, eval = FALSE}
-library(rvest)
-html("http://www.techstars.com/companies/stats/") %>%
-  html_node(".table75") %>% html_table()
-```
-
-```
-Error in UseMethod("html_table") : 
-  no applicable method for 'html_table' applied to an object of class "NULL"
-```
-
-Our technique from earlier doesn't work, why not?
 
 ## Browser <-> Web Server
 
@@ -202,20 +186,50 @@ Our technique from earlier doesn't work, why not?
 ```{r, eval = FALSE}
 # devtools::install_github("cpsievert/rdom")
 library(rdom)
-rdom("http://www.techstars.com/companies/stats/") %>%
-  html_node(".table75") %>% html_table()
+rdom("http://bl.ocks.org/cpsievert/raw/2a9fb8f504cd56e9e8e3/") %>%
+  html_node("table") %>% html_table()
 ```
 
 ```
-    Status Number of Companies Percentage
-1   Active                 400     76.34%
-2 Acquired                  68     12.98%
-3   Failed                  58     11.07%
+    X1   X2   X3
+1 Cell Cell Cell
+2 Cell Cell Cell
+3 Cell Cell Cell
 ```
 
-# What about non-HTML data?
+Now, without passing the _entire_ DOM between R and phantomjs:
 
-## Common data exchange formats
+```{r, eval = FALSE}
+rdom("http://www.techstars.com/companies/stats/", "table") %>%
+  html_table()
+```
+
+```
+    X1   X2   X3
+1 Cell Cell Cell
+2 Cell Cell Cell
+3 Cell Cell Cell
+```
+
+# Do _not_ scrape sites that offer Web APIs!!!
+
+## Web APIs
+
+> - A Web API is essentially a set of rules/standards for interacting with a Web server.
+> - APIs typically require knowledge of HTTP, but a single HTTP verb (`GET`) is usually what you want.
+> - With [httr](http://cran.r-project.org/web/packages/httr/index.html), working APIs is a breeze: 
+
+```{r}
+library(httr)
+me <- GET("https://api.github.com/users/cpsievert")
+content(me)[c("name", "company")]
+```
+
+## HTTP Verbs
+
+> - A tale of two machines: web __server__ and __client__.
+> - A __server__-side dynamic page requires a machine (the web server) other than the one requesting the page (the client) to process the requests.
+> - 
 
 > - HTML is great for _sharing content_ between _people_, but it isn't great for _exchanging data_ between _machines_.
 > - There are _a ton_ of other ways to exchange data over the web, but by far the most popular ones are XML and JSON.
@@ -377,14 +391,25 @@ Reduce(rbind, vehicles)
 mario[!grepl("vehicle", names(mario))]
 ```
 
-## Thanks for having me!
 
-* Contact:
-    * https://twitter.com/cpsievert
-    * https://github.com/cpsievert
-* R got a new logo!
+## Your Turn 1 Solution
 
-<div align = "center">
- <img src = "Rlogo.png" width = "300" height = "300">
-</div>
-* 
+```{r, eval = FALSE}
+library(rvest)
+src <- html("http://www.wunderground.com/history/airport/KVAY/2015/2/17/DailyHistory.html?req_city=Cherry+Hill&req_state=NJ&req_statename=New+Jersey&reqdb.zip=08002&reqdb.magic=1&reqdb.wmo=99999&MR=1")
+# easy solution
+tab1 <- src %>% html_node("#obsTable") %>% html_table()
+# medium solution
+tab2 <- src %>% html_node("#historyTable") %>% html_table() %>% .[2:4, "Actual"]
+# hard solution
+link <- src %>% html_node("#history-graph-image img") %>% html_attr("src")
+download.file(paste0("http://www.wunderground.com", link), "fig.png")
+```
+
+## Your Turn 2 Solution
+
+```{r}
+src <- html("http://en.wikipedia.org/wiki/List_of_data_structures")
+src %>% html_nodes("ul:nth-child(7) a") %>% html_text()
+src %>% html_nodes("ul:nth-child(19) a") %>% html_text()
+```
