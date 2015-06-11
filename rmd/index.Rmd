@@ -136,7 +136,7 @@ output: html_document
 ---
 ```
 
-In this case, when you click "Knit HTML", RStudio calls `rmarkdown::render("file.Rmd", html_document())`. You can certainly change these default values (see the source of this presentation).
+In this case, when you click "Knit HTML", RStudio calls `rmarkdown::render("file.Rmd", html_document())`. You can certainly change these default values (see the [source of this presentation](https://raw.githubusercontent.com/cpsievert/slides/gh-pages/rmd/index.Rmd)).
 
 ## What is a code chunk?
 
@@ -171,7 +171,7 @@ __Easy__: Modify the figure sizing and alignment.
 
 __Medium__: Add a figure caption.
 
-__Hard__: Can you create an animation? (Hint: you might need to `install.packages("animation")` and look at the `fig.show` chunk option)
+__Hard__: Can you create an animation? (Hint: look at the `fig.show` chunk option -- you might need to the __animation__ package for this)
 
 __Pro Tip__: Don't like the default chunk option value? Change it at the top of the document:
 
@@ -200,7 +200,7 @@ hist(rnorm(100), main = '')
 
 ## Your Turn
 
-Copy/paste the chunk hook (on the previous slide) into your R Markdown file. Notice th difference in margins.
+Copy/paste the chunk hook (on the previous slide) into your R Markdown file. Notice the difference in margins.
 
 ## Formatting R output
 
