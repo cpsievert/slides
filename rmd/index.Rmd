@@ -53,7 +53,7 @@ knitr::knit_hooks$set(source = function(x, options){
   <img src="chi-chi-hits-himself-in-the-nuts.gif" width=750 height=500>
 </div>
 
-## _Why_ R Markdown? {.build}
+## _Why_ R Markdown?
 
 > - It's __simple__. Focus on writing, rather than debugging silly errors (I'm looking at you _LaTeX_).
 > - It's __flexible__. Markdown was created to simplify writing HTML, but thanks to [pandoc](http://pandoc.org/), Markdown converts to many different formats!
@@ -67,7 +67,7 @@ knitr::knit_hooks$set(source = function(x, options){
 > - Markup languages are designed produce documents from plain text.
 > - Some of you may be familiar with _LaTeX_. This is another (less human friendly) markup language for creating pdf documents.
 > - _LaTeX_ gives you much greater control, but it is restricted to pdf and has a __much__ greater learning curve.
-> - As I mentioned, there are tools (mainly [pandoc](http://johnmacfarlane.net/pandoc/)) that allow you to render markdown in different formats (for example, HTML/pdf/word)
+> - Markdown is becoming a standard. Many websites will generate HTML from Markdown (e.g. GitHub, Stack Overflow, reddit).
 
 ## _Who_ is using R Markdown, and _for what_?
 
@@ -162,7 +162,6 @@ There are a plethora of [chunk options](http://yihui.name/knitr/options/) in __k
 * `fig.width` and `fig.height`: Change size of figure output.
 * `cache`: Save the output of this chunk (so we don't have to run it next time)?
 
-
 ## Your Turn
 
 Study the second page of the [R Markdown Reference Guide](rmarkdown-reference.pdf) and go back to the [Hello R Markdown example](hello_rmarkdown.Rmd)
@@ -197,6 +196,10 @@ Then use it like this:
 ```{r histogram, small.mar = TRUE, verbatim = TRUE}
 hist(rnorm(100), main = '')
 ```
+
+## Your Turn
+
+Copy/paste the chunk hook (on the previous slide) into your R Markdown file. Notice th difference in margins.
 
 ## Formatting R output
 
@@ -240,18 +243,16 @@ methods(pander)
 ## Interactive Stuff
 
 ```{r}
-# install.packages("DT")
-library(DT)
-library(ggplot2)
+data(diamonds, package = "ggplot2")
 d <- diamonds[sample(nrow(diamonds), 1000), ]
-datatable(d)
+DT::datatable(d)
 ```
 
 ---
 
 ```{r}
-# devtools::install_github("ropensci/plotly@carson-dsl")
 library(plotly)
+library(ggplot2)
 p <- ggplot(data = d, aes(x = carat, y = price, colour = clarity)) +
   geom_point(aes(text = cut), size = 3) + geom_smooth() + facet_wrap(~ clarity)
 ggplotly(p)
@@ -259,10 +260,6 @@ ggplotly(p)
 
 ## Reactive documents with shiny!
 
-If you haven't already: `install.packages("shiny")`
-
-Then,
-
 <div align="center">
-  <img src="shiny.png" width=400 height=300>
+  <img src="shiny.png" width=600 height=400>
 </div>
