@@ -27,6 +27,7 @@ knitr::knit_hooks$set(source = function(x, options){
     )
   }
 })
+library(ggplot2)
 ```
 
 ## Hello R Markdown!
@@ -243,7 +244,6 @@ methods(pander)
 ## Interactive Stuff
 
 ```{r}
-data(diamonds, package = "ggplot2")
 d <- diamonds[sample(nrow(diamonds), 1000), ]
 DT::datatable(d)
 ```
@@ -252,7 +252,6 @@ DT::datatable(d)
 
 ```{r}
 library(plotly)
-library(ggplot2)
 p <- ggplot(data = d, aes(x = carat, y = price, colour = clarity)) +
   geom_point(aes(text = cut), size = 3) + geom_smooth() + facet_wrap(~ clarity)
 ggplotly(p)
