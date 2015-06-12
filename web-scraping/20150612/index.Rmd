@@ -67,12 +67,6 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
 > - Parsing HTML/XML/JSON is easy; but putting it into a tidy form is typically _not easy_.
 > - Knowing a bit about modern tools & web technologies makes it _much_ easier.
 
----
-
-<div align = "center">
-  <img src = "view-the-source.jpg" width = "1000" height = "600">
-</div>
-
 ## Motivating Example
 
 <iframe src = "http://en.wikipedia.org/wiki/Table_%28information%29" width = "800px" height = "600px"></iframe>
