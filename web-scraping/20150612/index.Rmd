@@ -1,7 +1,7 @@
 ---
 title: "Web scraping in R"
 author: "Carson Sievert"
-date: "May 15, 2015"
+date: "June 12, 2015"
 output:
   ioslides_presentation:
     transition: default
@@ -55,8 +55,8 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
 
 > - If the resource is well-known, someone else has probably built a tool which provides easier access to the data.
 > - I wrote [pitchRx](http://cran.r-project.org/web/packages/pitchRx/) which downloads, parses, cleans, and transforms XML data for a specific baseball data resource. Just give it start/end dates.
-> - [ropensci](https://ropensci.org/) has a [ton of R packages](https://ropensci.org/packages/) for scientific data sources.
-> - The [Web Technologies and Services CRAN Task View](http://cran.r-project.org/web/views/WebTechnologies.html) is a concise overview of various tools for working with data that lives on the web.
+> - [ropensci](https://ropensci.org/) has a [ton of R packages](https://ropensci.org/packages/) providing clean interfaces to open data.
+> - The [Web Technologies and Services CRAN Task View](http://cran.r-project.org/web/views/WebTechnologies.html) is a great overview of various tools for working with data that lives on the web.
 
 ## A web of _messy_ data!
 
@@ -90,26 +90,22 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
  <img src = "inspector.png" width = "750" height = "500">
 </div>
 
----
-
-[rvest](http://cran.r-project.org/web/packages/rvest/index.html) makes scraping HTML pages super easy.
+## Wikitable {.build}
 
 ```{r}
 library(rvest)
-# First, grab the page source
 src <- html("http://en.wikipedia.org/wiki/Table_(information)")
-# extract the first element with class of wikitable
-node <- html_node(src, ".wikitable")
-# convert that <table> element to a data frame
+node <- html_node(src, css = ".wikitable")
+```
+
+> - `".wikitable"` is a CSS selector which says: "grab nodes (aka elements) with a class of wikitable".
+> - `html_table()` converts a single `<table>` node to a data frame.
+
+```{r}
 html_table(node)
 ```
 
-> - `html_table()` only works on a single `<table>` element.
-> - `".wikitable"` is a CSS selector which says: "grab any element with a class equal to wikitable".
-
----
-
-__rvest__ is designed to be pipeable.
+## Pipeable! {.build}
 
 ```{r}
 html("http://en.wikipedia.org/wiki/Table_(information)") %>%
@@ -117,9 +113,6 @@ html("http://en.wikipedia.org/wiki/Table_(information)") %>%
 ```
 
 > - Much easier to read/understand!
-
----
-
 
 ## Your Turn 1
 
@@ -131,7 +124,9 @@ __Medium__: Grab the actual mean, max, and min temperature.
 
 __Hard__: Grab the weather history graph and write the figure to disk (`download.file()` may be helpful here). 
 
-(kudos to Hadley Wickham for the example)
+(Kudos to Hadley Wickham for the example)
+
+[See here](https://gist.github.com/cpsievert/57be009120bb5298affa) for a solution
 
 # What about non-`<table>` data?
 
@@ -141,7 +136,7 @@ __Hard__: Grab the weather history graph and write the figure to disk (`download
 > - With some user feedback, the gadget find out the [CSS selector](http://www.w3.org/TR/2011/REC-css3-selectors-20110929/) that returns the highlighted page elements.
 > - Let's try it out on [this page](http://www.sec.gov/litigation/suspensions.shtml)
 
-## Extracting links to download reports
+## Extracting links to download reports {.build}
 
 ```{r}
 domain <- "http://www.sec.gov"
@@ -164,6 +159,8 @@ Nativigate to Wikipedia's [list of data structures](http://en.wikipedia.org/wiki
 1. Obtain a list of Primitive types
 2. Obtain a list of the different Array types
 
+[See here](https://gist.github.com/cpsievert/c1b851ff5e1bd846de46) for a solution.
+
 # Scraping _dynamic_ web pages
 
 ---
@@ -181,10 +178,9 @@ rvest::html("http://bl.ocks.org/cpsievert/raw/2a9fb8f504cd56e9e8e3/")
 
 ---
 
-[rdom](https://github.com/cpsievert/rdom) can return the DOM as HTML:
+[rdom](https://github.com/cpsievert/rdom) can construct the DOM:
 
 ```{r, eval = FALSE}
-# devtools::install_github("cpsievert/rdom")
 library(rdom)
 rdom("http://bl.ocks.org/cpsievert/raw/2a9fb8f504cd56e9e8e3/") %>%
   html_node("table") %>% html_table()
@@ -197,7 +193,7 @@ rdom("http://bl.ocks.org/cpsievert/raw/2a9fb8f504cd56e9e8e3/") %>%
 3 Cell Cell Cell
 ```
 
-Now, without passing the _entire_ DOM between R and phantomjs:
+You can give `rdom()` CSS Selectors directly to avoid sending the _entire_ DOM from phantomjs to R
 
 ```{r, eval = FALSE}
 rdom("http://www.techstars.com/companies/stats/", "table") %>%
@@ -211,28 +207,36 @@ rdom("http://www.techstars.com/companies/stats/", "table") %>%
 3 Cell Cell Cell
 ```
 
-# Do _not_ scrape sites that offer Web APIs!!!
+## Don't abuse your power
 
-## Web APIs
+> - If you scrape a website, please read the terms and conditions!!
+> - For [client-side dynamic sites](https://en.wikipedia.org/wiki/Dynamic_web_page#Client-side_scripting), it's sometimes more efficient/appropriate to [find the API](http://www.gregreda.com/2015/02/15/web-scraping-finding-the-api/) rather than rendering the entire DOM.
+> - If a website public offers an API, USE IT (instead of scraping)!!!
 
-> - A Web API is essentially a set of rules/standards for interacting with a Web server.
-> - APIs typically require knowledge of HTTP, but a single HTTP verb (`GET`) is usually what you want.
-> - With [httr](http://cran.r-project.org/web/packages/httr/index.html), working APIs is a breeze: 
+## Web APIs {.build} 
+
+> - [Server-side Web APIs](https://en.wikipedia.org/wiki/Web_API#Server-side) are a popular way to provide easy access to data and other services. 
+> - If you (the client) want data from a server, you typically need one HTTP verb -- `GET`.
 
 ```{r}
 library(httr)
-me <- GET("https://api.github.com/users/cpsievert")
-content(me)[c("name", "company")]
+hadley <- GET("https://api.github.com/users/hadley")
+content(hadley)[c("name", "company")]
 ```
 
-## HTTP Verbs
+> - Other HTTP verbs -- `POST`, `PUT`, `DELETE`, etc...
+    * You probably won't need these unless your developing a web app.
 
-> - A tale of two machines: web __server__ and __client__.
-> - A __server__-side dynamic page requires a machine (the web server) other than the one requesting the page (the client) to process the requests.
-> - 
+## Request/response model {.build}
 
-> - HTML is great for _sharing content_ between _people_, but it isn't great for _exchanging data_ between _machines_.
-> - There are _a ton_ of other ways to exchange data over the web, but by far the most popular ones are XML and JSON.
+> - When you (the client) _requests_ a resource from the server. The server _responds_ with a bunch of additional information.
+
+```{r}
+hadley <- httr::GET("https://api.github.com/users/hadley")
+hadley$header[1:3]
+```
+
+> - Nowadays content-type is usually XML or JSON (HTML is great for _sharing content_ between _people_, but it isn't great for _exchanging data_ between _machines_.)
 
 ## What is XML?
 
@@ -306,7 +310,6 @@ Now (if I want) I can merge the tables into a single table...
 tabs <- collapse_obs(obs)
 merge(tabs[[1]], tabs[[2]], by = "name")
 ```
-
 
 ## What about JSON? {.build}
 
@@ -391,25 +394,3 @@ Reduce(rbind, vehicles)
 mario[!grepl("vehicle", names(mario))]
 ```
 
-
-## Your Turn 1 Solution
-
-```{r, eval = FALSE}
-library(rvest)
-src <- html("http://www.wunderground.com/history/airport/KVAY/2015/2/17/DailyHistory.html?req_city=Cherry+Hill&req_state=NJ&req_statename=New+Jersey&reqdb.zip=08002&reqdb.magic=1&reqdb.wmo=99999&MR=1")
-# easy solution
-tab1 <- src %>% html_node("#obsTable") %>% html_table()
-# medium solution
-tab2 <- src %>% html_node("#historyTable") %>% html_table() %>% .[2:4, "Actual"]
-# hard solution
-link <- src %>% html_node("#history-graph-image img") %>% html_attr("src")
-download.file(paste0("http://www.wunderground.com", link), "fig.png")
-```
-
-## Your Turn 2 Solution
-
-```{r}
-src <- html("http://en.wikipedia.org/wiki/List_of_data_structures")
-src %>% html_nodes("ul:nth-child(7) a") %>% html_text()
-src %>% html_nodes("ul:nth-child(19) a") %>% html_text()
-```
