@@ -53,10 +53,10 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
 
 ## Before scraping, do some googling!
 
-> - If the resource is well-known, someone else has probably built a tool which provides easier access to the data.
+> - If the resource is well-known, someone else has probably built a tool which solves the problem for you.
 > - I wrote [pitchRx](http://cran.r-project.org/web/packages/pitchRx/) which downloads, parses, cleans, and transforms XML data for a specific baseball data resource. Just give it start/end dates.
-> - [ropensci](https://ropensci.org/) has a [ton of R packages](https://ropensci.org/packages/) providing clean interfaces to open data.
-> - The [Web Technologies and Services CRAN Task View](http://cran.r-project.org/web/views/WebTechnologies.html) is a great overview of various tools for working with data that lives on the web.
+> - [ropensci](https://ropensci.org/) has a [ton of R packages](https://ropensci.org/packages/) providing easy-to-use interfaces to open data.
+> - The [Web Technologies and Services CRAN Task View](http://cran.r-project.org/web/views/WebTechnologies.html) is a great overview of various tools for working with data that lives on the web in R.
 
 ## A web of _messy_ data!
 
@@ -64,7 +64,7 @@ opts_chunk$set(message = FALSE, cache = TRUE, warning = FALSE)
 > - That is, data appears in a tabular form where
     * 1 row == 1 observation
     * 1 column == 1 variable (observational attribute)
-> - Parsing HTML/XML/JSON is easy; but navigating, cleaning, extracting relevants bits, and transforming it into a tidy form is _not easy_.
+> - Parsing HTML/XML/JSON is easy; but putting it into a tidy form is typically _not easy_.
 > - Knowing a bit about modern tools & web technologies makes it _much_ easier.
 
 ---
@@ -124,9 +124,7 @@ __Medium__: Grab the actual mean, max, and min temperature.
 
 __Hard__: Grab the weather history graph and write the figure to disk (`download.file()` may be helpful here). 
 
-(Kudos to Hadley Wickham for the example)
-
-[See here](https://gist.github.com/cpsievert/57be009120bb5298affa) for a solution
+[See here](https://gist.github.com/cpsievert/57be009120bb5298affa) for a solution (thanks Hadley Wickham for the example)
 
 # What about non-`<table>` data?
 
@@ -140,7 +138,7 @@ __Hard__: Grab the weather history graph and write the figure to disk (`download
 
 ```{r}
 domain <- "http://www.sec.gov"
-susp <- file.path(domain, "litigation/suspensions.shtml")
+susp <- paste0(domain, "/litigation/suspensions.shtml")
 hrefs <- html(susp) %>% html_nodes("p+ table a") %>% html_attr(name = "href")
 tail(hrefs)
 ```
