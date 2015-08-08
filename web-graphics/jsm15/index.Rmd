@@ -36,9 +36,7 @@ p <- qplot(data = iris, x = Sepal.Width, y = Sepal.Length, color = Species)
 structure(list(p = p), class = "animint")
 ```
 
-<!--
 <iframe src="animint/index.html" scrolling="no" style="border:none;"></iframe>
--->
 
 ---
 
@@ -47,9 +45,7 @@ library(plotly)
 ggplotly(p)
 ```
 
-<!--
 <iframe src="plotly1/index.html" scrolling="no" style="border:none;"></iframe>
--->
 
 ---
 
@@ -96,9 +92,7 @@ myWrapper <- function(...) {
 (p <- plot_ly(z = volcano, type = "surface"))
 ```
 
-<!--
 <iframe src="plotly3/index.html" scrolling="no" style="border:none;"></iframe>
--->
 
 ---
 
@@ -139,9 +133,7 @@ plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
          title = "Median duration of unemployment (in weeks)", showlegend = F)
 ```
 
-<!--
 <iframe src="plotly2/index.html" scrolling="no" style="border:none;"></iframe>
--->
 
 ## Thoughts on custom bindings
 
