@@ -1,0 +1,14 @@
+---
+title: "Minimal Example"
+author: "Carson Sievert"
+date: "August 7, 2015"
+output: 
+  html_document:
+    self_contained: false
+---
+
+```{r}
+library(animint)
+p <- qplot(data = iris, x = Sepal.Width, y = Sepal.Length, color = Species)
+structure(list(p = p), class = "animint")
+```
