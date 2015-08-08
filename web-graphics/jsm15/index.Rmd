@@ -28,6 +28,7 @@ knitr::opts_chunk$set(message = FALSE, eval = FALSE)
 1. Reach (everyone has internet, right?)
 
 # The naive approach: figure converters
+
 ---
 
 ```{r}
@@ -68,6 +69,7 @@ dev.off()
     * Conversion isn't 1-to-1
 
 # Bindings to Reusable Charts
+
 ---
 
 > - General idea:
