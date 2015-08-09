@@ -1,0 +1,126 @@
+---
+title: "Acquiring, Visualizing, and Modeling MLB Umpire Strike/Ball Decisions with PITCHf/x Data"
+author: "Carson Sievert"
+date: "August 12th, 2015"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+css:
+  styles.css
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(message = FALSE, eval = FALSE, cache = TRUE, warning = FALSE)
+```
+
+# Acquiring PITCHf/x
+
+---
+
+```{r}
+library(pitchRx)
+# returns a list of related tables (see diagram below)
+dat <- scrape(start = "2008-01-01", end = Sys.Date())
+```
+
+<div align="center">
+  <img src="tables.png" width="900" height="450" />
+</div>
+
+# Storing PITCHf/x
+
+---
+
+```{r}
+db <- dplyr::src_sqlite("pitchRx.sqlite3", create = TRUE)
+pitchRx::scrape(start = "2008-01-01", end = Sys.Date(), connect = db$con)
+```
+
+> - Any database connection should work!
+> - Writes data in streaming chunks to avoid exhausting memory.
+> - Keeping your database up-to-date is also easy!
+
+<ul class="build">
+```{r}
+update_db(db$con)
+```
+</ul>
+
+> - Add other data!
+    * [openWAR estimates](https://baseballwithr.wordpress.com/2014/06/30/pitchrx-meet-openwar-4/) (open source calculation of Wins Above Replacement)
+    * [Exit Velocity and Distance of Batted Balls](https://baseballwithr.wordpress.com/2015/07/15/obtaining-exit-velocity-and-distance-of-batted-balls/)
+
+# Animating PITCHf/x
+
+---
+
+[source](https://www.reddit.com/r/baseball/comments/1d2z6d/all_of_darvishs_primary_pitches_at_once/)
+
+<div align="center">
+  <img src="yu.gif" width="800" height="550">
+</div>
+
+---
+
+<div align="center">
+  <img src="patent1.png" width="800" height="550">
+</div>
+
+## Query/Animate PITCHf/x
+
+Player/date info recorded on the at-bat level.
+
+```{r}
+library(dplyr)
+atbats <- tbl(db, 'atbat') %>%
+  filter(pitcher_name == 'Yu Darvish', batter_name == 'Albert Pujols', 
+         date == '2013_04_24')
+```
+
+> - Now, obtain PITCHf/x data for these at-bats.
+
+<ul class="build">
+```{r}
+tbl(db, 'pitch') %>%
+  inner_join(atbats, by = c('num', 'gameday_link')) %>%
+  collect() %>% pitchRx::animateFX()
+```
+</ul>
+
+---
+
+```{r, echo = FALSE, eval = TRUE, fig.show='animate', fig.align='center', interval=0.05, dev="CairoPNG"}
+library(dplyr)
+db <- src_sqlite("~/pitchfx/pitchRx.sqlite3")
+atbats <- tbl(db, 'atbat') %>%
+  filter(pitcher_name == 'Yu Darvish', batter_name == 'Albert Pujols', 
+         date == '2013_04_24')
+tbl(db, 'pitch') %>%
+  inner_join(atbats, by = c('num', 'gameday_link')) %>%
+  collect() %>% pitchRx::animateFX()
+```
+
+# Modeling PITCHf/x
+
+https://baseballwithr.wordpress.com/2014/10/23/a-probabilistic-model-for-interpreting-strike-zone-expansion-7/
+https://baseballwithr.wordpress.com/2014/11/11/interactive-visualization-of-strike-zone-expansion-5/
+
+
+## GAMs
+
+```{r, echo = FALSE}
+download.file(
+  "http://multithreaded.stitchfix.com/assets/images/blog/fig1.svg",
+  "gam.svg"
+)
+```
+
+<img src = "gam.svg" />
+
+
+
+## Future Work
+
+* How do we test for a significant _overall_ difference between scenario A and B?
+* Possible solution: Visual Inference
