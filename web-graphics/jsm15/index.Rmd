@@ -237,7 +237,7 @@ plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
 
 ## Final Thoughts
 
-> - Web-based interactive statistical graphics are not (yet) as fully featured as non Web-based options (see ggobi, LISP-STAT, loon, etc.)
+> - Web-based interactive statistical graphics are not (yet) as fully featured as non Web-based options (see LISP-STAT, cranvas, ggobi, loon, MANET, DataDesk, etc.)
 > - Plea to developers: 
     * build tools for domain specific problems (see qtlcharts, LDAvis)
     * focus less on features, more on what your audience really needs
