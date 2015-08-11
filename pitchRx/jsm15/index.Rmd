@@ -108,7 +108,7 @@ pitchRx::animateFX(dat, layer = ggplot2::coord_fixed())
 ## Inspired from Brian Mills' Work
 
 <div align="center">
-  <img src="mills.png" />
+  <img src="mills2.png" />
 </div>
 
 ---
@@ -153,16 +153,25 @@ strikeFX(dat, model = m, density1 = list(year = "2008"),
 ```
 
 <div align="center">
-  <img src="ball0.png" />
-  <img src="ball1.png" />
-  <img src="ball2.png" />
-  <img src="ball3.png" />
+  <img src="strikes.png" width="1000" height="450"/>
 </div>
 
+## Middle of the plate at the knees
+
+<div align="center">
+  <img src="probs.png" width="700" height="300"/>
+</div>
 
 ---
 
 <iframe src="viz/index.html" style="border:none; width:2000;"></iframe>
+
+## Some takeaways
+
+* Called strikes at the knees were 2-4 times more likely in 2014 compared to 2008.
+* 
+
+but called strikes up-and-in or up-and-away are much *less* likely nowadays.
 
 ## Confidence/credible Intervals for GAMs
 
