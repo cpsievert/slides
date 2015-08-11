@@ -6,6 +6,7 @@ output:
   ioslides_presentation:
     transition: default
     widescreen: true
+    standalone: false
 css:
   styles.css
 ---
@@ -96,31 +97,98 @@ db <- src_sqlite("~/pitchfx/pitchRx.sqlite3")
 atbats <- tbl(db, 'atbat') %>%
   filter(pitcher_name == 'Yu Darvish', batter_name == 'Albert Pujols', 
          date == '2013_04_24')
-tbl(db, 'pitch') %>%
+dat <- tbl(db, 'pitch') %>%
   inner_join(atbats, by = c('num', 'gameday_link')) %>%
-  collect() %>% pitchRx::animateFX()
+  collect()
+pitchRx::animateFX(dat, layer = ggplot2::coord_fixed())
 ```
 
-# Modeling PITCHf/x
+# Modeling called strike decisions
 
-https://baseballwithr.wordpress.com/2014/10/23/a-probabilistic-model-for-interpreting-strike-zone-expansion-7/
-https://baseballwithr.wordpress.com/2014/11/11/interactive-visualization-of-strike-zone-expansion-5/
+## Inspired from Brian Mills' Work
 
+<div align="center">
+  <img src="mills.png" />
+</div>
 
-## GAMs
+---
 
-```{r, echo = FALSE}
-download.file(
-  "http://multithreaded.stitchfix.com/assets/images/blog/fig1.svg",
-  "gam.svg"
-)
+<ul class="build">
+```{r}
+# condition on umpire decisions
+pitches <- tbl(db, "pitch") %>%
+  filter(des %in% c("Called Strike", "Ball")) %>%
+  mutate(strike = as.numeric(des == "Called Strike"))
+```
+</ul>
+
+<ul class="build">
+```{r}
+# goal is to compare 2008 to 2014
+atbats <- tbl(db, "atbat") %>%
+  mutate(year = substr(date, 5L, -4L)) %>%
+  filter(year %in% c("2008", "2014"))
+dat <- left_join(pitches, atbats)
+```
+</ul>
+
+<ul class="build">
+```{r}
+library(mgcv)
+# 48 (2 x 2 x 12) surfaces!
+m <- bam(strike ~ interaction(stand, year, count) +
+            s(px, pz, by = interaction(stand, year, count)),
+          data = dat, family = binomial(link = 'logit'))
+```
+</ul>
+
+# Visualizing differences 
+
+---
+
+```{r}
+strikeFX(dat, model = m, density1 = list(year = "2008"),
+          density2 = list(year = "2014"), 
+          layer = facet_grid(count ~ stand))
 ```
 
-<img src = "gam.svg" />
+<div align="center">
+  <img src="ball0.png" />
+  <img src="ball1.png" />
+  <img src="ball2.png" />
+  <img src="ball3.png" />
+</div>
 
 
+---
+
+<iframe src="viz/index.html" style="border:none; width:2000;"></iframe>
+
+## Confidence/credible Intervals for GAMs
+
+> - Form approximate CI on scale of the predictor, then transform to response scale.
+    * Pros: computationally cheap
+    * Cons: point-wise; approximate; assumes smoothness parameters are known 
+> - Simulate from the posterior and obtain percentiles
+    * Pros: simultaneous (as opposed to point-wise)
+    * Cons: assumes smoothness parameters are known 
+> - Parametric bootstrap
+    * Pros: simultaneous (as opposed to point-wise); not conditional on smoothness parameters
+
+## Take Trey's Advice
+
+<div align="center">
+  <img src="trey.png" width="400" height="600" />
+</div>
 
 ## Future Work
 
 * How do we test for a significant _overall_ difference between scenario A and B?
 * Possible solution: Visual Inference
+
+
+# Thank you!
+
+Special thanks to:
+    * Brian Mills for comments/discussions on pitchRx and GAMs.
+    * Mike Lopez for the invitation
