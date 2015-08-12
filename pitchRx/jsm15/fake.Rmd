@@ -1,0 +1,6 @@
+---
+author: "<http://cpsievert.github.io/slides/pitchRx/jsm15/>"
+output: pdf_document
+---
+
+

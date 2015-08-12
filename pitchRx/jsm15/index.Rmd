@@ -49,14 +49,14 @@ update_db(db$con)
 </ul>
 
 > - Add other data!
-    * [openWAR estimates](https://baseballwithr.wordpress.com/2014/06/30/pitchrx-meet-openwar-4/) (open source calculation of Wins Above Replacement)
+    * [openWAR estimates](https://baseballwithr.wordpress.com/2014/06/30/pitchrx-meet-openwar-4/) (Baumer, Jensen, Matthews 2013)
     * [Exit Velocity and Distance of Batted Balls](https://baseballwithr.wordpress.com/2015/07/15/obtaining-exit-velocity-and-distance-of-batted-balls/)
 
 # Animating PITCHf/x
 
 ---
 
-[source](https://www.reddit.com/r/baseball/comments/1d2z6d/all_of_darvishs_primary_pitches_at_once/)
+[Shepard 2013](https://www.reddit.com/r/baseball/comments/1d2z6d/all_of_darvishs_primary_pitches_at_once/)
 
 <div align="center">
   <img src="yu.gif" width="800" height="550">
@@ -79,7 +79,7 @@ atbats <- tbl(db, 'atbat') %>%
          date == '2013_04_24')
 ```
 
-> - Now, obtain PITCHf/x data for these at-bats.
+> - Join at-bats with pitches and animate!
 
 <ul class="build">
 ```{r}
@@ -166,38 +166,33 @@ strikeFX(dat, model = m, density1 = list(year = "2008"),
 
 <iframe src="viz/index.html" style="border:none; width:2000;"></iframe>
 
-## Some takeaways
+# Quantifying homefield bias in called strikes
 
-* Called strikes at the knees were 2-4 times more likely in 2014 compared to 2008.
-* 
+---
 
-but called strikes up-and-in or up-and-away are much *less* likely nowadays.
+<div align="center">
+  <img src="prob-diffs.png" width="700" height="500" />
+</div>
 
 ## Confidence/credible Intervals for GAMs
 
 > - Form approximate CI on scale of the predictor, then transform to response scale.
     * Pros: computationally cheap
-    * Cons: point-wise; approximate; assumes smoothness parameters are known 
+    * Cons: point-wise (not simultaneous); approximate; assumes smoothness parameters are known 
 > - Simulate from the posterior and obtain percentiles
-    * Pros: simultaneous (as opposed to point-wise)
+    * Pros: simultaneous (not point-wise)
     * Cons: assumes smoothness parameters are known 
 > - Parametric bootstrap
     * Pros: simultaneous (as opposed to point-wise); not conditional on smoothness parameters
 
-## Take Trey's Advice
+## Trey's Advice
 
 <div align="center">
-  <img src="trey.png" width="400" height="600" />
+  <img src="trey.png" width="300" height="400" />
 </div>
-
-## Future Work
-
-* How do we test for a significant _overall_ difference between scenario A and B?
-* Possible solution: Visual Inference
-
 
 # Thank you!
 
-Special thanks to:
-    * Brian Mills for comments/discussions on pitchRx and GAMs.
-    * Mike Lopez for the invitation
+* Special thanks to:
+* Brian Mills for comments/discussions on pitchRx and GAMs.
+* Mike Lopez for the invitation
