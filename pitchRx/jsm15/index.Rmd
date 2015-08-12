@@ -166,29 +166,19 @@ strikeFX(dat, model = m, density1 = list(year = "2008"),
 
 <iframe src="viz/index.html" style="border:none; width:2000;"></iframe>
 
+## Aside on interval estimation
+
+> - These intervals are approximate, point-wise, and assume smoothness parameters are known.
+> - (Wood 2006) obtains simultaneous intervals without conditioning on smoothness parameters via parametric bootstrap.
+
+> - <img src="trey.png" width="300" height="400" />
+
 # Quantifying homefield bias in called strikes
 
 ---
 
 <div align="center">
   <img src="prob-diffs.png" width="700" height="500" />
-</div>
-
-## Confidence/credible Intervals for GAMs
-
-> - Form approximate CI on scale of the predictor, then transform to response scale.
-    * Pros: computationally cheap
-    * Cons: point-wise (not simultaneous); approximate; assumes smoothness parameters are known 
-> - Simulate from the posterior and obtain percentiles
-    * Pros: simultaneous (not point-wise)
-    * Cons: assumes smoothness parameters are known 
-> - Parametric bootstrap
-    * Pros: simultaneous (as opposed to point-wise); not conditional on smoothness parameters
-
-## Trey's Advice
-
-<div align="center">
-  <img src="trey.png" width="300" height="400" />
 </div>
 
 # Thank you!
