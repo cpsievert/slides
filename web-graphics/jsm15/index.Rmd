@@ -52,7 +52,7 @@ ggplotly(p)
 
 <div align="center">
   <a href="plotly1/"> 
-    <img src="plotly1.png" width="700" height="400" />
+    <img src="plotly1.png" width="700" height="300" />
   </a>
 </div>
 

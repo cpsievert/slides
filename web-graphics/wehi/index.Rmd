@@ -59,7 +59,7 @@ ggplotly(p)
 
 <div align="center">
   <a href="plotly1/"> 
-    <img src="plotly1.png" width="500" height="400" />
+    <img src="plotly1.png" width="600" height="400" />
   </a>
 </div>
 
@@ -119,7 +119,8 @@ ggplotly(p)
 ## The Code
 
 ```{r sex-smoker, eval = FALSE}
-tips$sex_smoker <- with(reshape2::tips, interaction(sex, smoker))
+data(tips, package = "reshape2")
+tips$sex_smoker <- with(tips, interaction(sex, smoker))
 library(animint)
 p1 <- ggplot() + theme(legend.position = "none") +
   geom_point(data = tips, position = "jitter",
@@ -161,8 +162,8 @@ animint2dir(plots)
 ## WorldBank Viz
 
 <div align="center">
-  <a href="http://bl.ocks.org/tdhock/raw/217823c39eb1fc7c5dc9/"> 
-    <img src="screencast-WorldBank.gif" width="900" height="600" />
+  <a href="bank/"> 
+    <img src="screencast-WorldBank.gif" width="900" height="550" />
   </a>
 </div>
 
@@ -173,7 +174,9 @@ Behold, the HTML file for all of these animint plots!!!
 ```html
 <html>
   <head>
+## <b>
     <script type="text/javascript" src="animint.js"></script>
+## </b>
   </head>
   <body>
     <div id="plot" align="center"> </div>
@@ -184,7 +187,7 @@ Behold, the HTML file for all of these animint plots!!!
 </html>
 ```
 
-# How do we test the renderer?
+# How do we ensure visualizations render properly?
 
 ---
 

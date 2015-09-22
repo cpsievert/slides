@@ -1,0 +1,1005 @@
+{
+ "geoms": {
+ "geom1_tallrect_ts": {
+ "geom": "tallrect",
+"classed": "geom1_tallrect_ts",
+"aes": {
+ "xmin": "year - 1/2",
+"xmax": "year + 1/2",
+"clickSelects": "year" 
+},
+"params": {
+ "alpha":    0.5 
+},
+"subset_order": [
+ "PANEL" 
+],
+"types": {
+ "xmin": "numeric",
+"xmax": "numeric",
+"clickSelects": "numeric",
+"PANEL": "factor",
+"group": "integer" 
+},
+"PANEL": "4",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "PANEL" 
+],
+"timeValues": [   1960,   1961,   1962,   1963,   1964,   1965,   1966,   1967,   1968,   1969,   1970,   1971,   1972,   1973,   1974,   1975,   1976,   1977,   1978,   1979,   1980,   1981,   1982,   1983,   1984,   1985,   1986,   1987,   1988,   1989,   1990,   1991,   1992,   1993,   1994,   1995,   1996,   1997,   1998,   1999,   2000,   2001,   2002,   2003,   2004,   2005,   2006,   2007,   2008,   2009,   2010,   2011 ],
+"nextgeom": "geom2_line_ts" 
+},
+"geom2_line_ts": {
+ "geom": "line",
+"classed": "geom2_line_ts",
+"aes": {
+ "x": "year",
+"y": "life.expectancy",
+"group": "country",
+"colour": "region",
+"clickSelects": "country",
+"showSelectedlegendcolour": "region" 
+},
+"params": {
+ "size":      4,
+"alpha":    0.6 
+},
+"subset_order": [
+ "showSelectedlegendcolour",
+"PANEL" 
+],
+"types": {
+ "colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"group": "integer",
+"clickSelects": "factor",
+"showSelectedlegendcolour": "factor",
+"PANEL": "factor" 
+},
+"PANEL": "4",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelectedlegendcolour",
+"PANEL",
+"group" 
+],
+"nextgeom": "geom3_point_ts" 
+},
+"geom3_point_ts": {
+ "geom": "point",
+"classed": "geom3_point_ts",
+"aes": {
+ "x": "year",
+"y": "life.expectancy",
+"colour": "region",
+"size": "population",
+"showSelected": "country",
+"clickSelects": "country",
+"showSelectedlegendcolour": "region" 
+},
+"params": {
+ "na.rm": false 
+},
+"subset_order": [
+ "showSelected",
+"showSelectedlegendcolour",
+"PANEL" 
+],
+"types": {
+ "size": "numeric",
+"colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"showSelected": "factor",
+"clickSelects": "factor",
+"showSelectedlegendcolour": "factor",
+"PANEL": "factor",
+"fill": "rgb" 
+},
+"PANEL": "4",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelected",
+"showSelectedlegendcolour",
+"PANEL" 
+],
+"nextgeom": "geom4_text_ts" 
+},
+"geom4_text_ts": {
+ "geom": "text",
+"classed": "geom4_text_ts",
+"aes": {
+ "x": "year",
+"y": "life.expectancy",
+"colour": "region",
+"label": "country",
+"showSelected": "country",
+"clickSelects": "country",
+"showSelectedlegendcolour": "region" 
+},
+"params": {
+ "parse": false,
+"hjust":      1 
+},
+"subset_order": [
+ "showSelected",
+"showSelectedlegendcolour",
+"PANEL" 
+],
+"types": {
+ "colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"label": "factor",
+"showSelected": "factor",
+"clickSelects": "factor",
+"showSelectedlegendcolour": "factor",
+"PANEL": "factor" 
+},
+"PANEL": "4",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelected",
+"showSelectedlegendcolour",
+"PANEL" 
+],
+"nextgeom": "geom5_widerect_ts" 
+},
+"geom5_widerect_ts": {
+ "geom": "widerect",
+"classed": "geom5_widerect_ts",
+"aes": {
+ "ymin": "year - 1/2",
+"ymax": "year + 1/2",
+"clickSelects": "year" 
+},
+"params": {
+ "alpha":    0.5 
+},
+"subset_order": [
+ "PANEL" 
+],
+"types": {
+ "ymin": "numeric",
+"ymax": "numeric",
+"clickSelects": "numeric",
+"PANEL": "factor",
+"group": "integer" 
+},
+"PANEL": "1",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "PANEL" 
+],
+"timeValues": [   1960,   1961,   1962,   1963,   1964,   1965,   1966,   1967,   1968,   1969,   1970,   1971,   1972,   1973,   1974,   1975,   1976,   1977,   1978,   1979,   1980,   1981,   1982,   1983,   1984,   1985,   1986,   1987,   1988,   1989,   1990,   1991,   1992,   1993,   1994,   1995,   1996,   1997,   1998,   1999,   2000,   2001,   2002,   2003,   2004,   2005,   2006,   2007,   2008,   2009,   2010,   2011 ],
+"nextgeom": "geom6_line_ts" 
+},
+"geom6_line_ts": {
+ "geom": "line",
+"classed": "geom6_line_ts",
+"aes": {
+ "x": "fertility.rate",
+"y": "year",
+"group": "country",
+"colour": "region",
+"clickSelects": "country",
+"showSelectedlegendcolour": "region" 
+},
+"params": {
+ "size":      4,
+"alpha":    0.6 
+},
+"subset_order": [
+ "showSelectedlegendcolour",
+"PANEL" 
+],
+"types": {
+ "colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"group": "integer",
+"clickSelects": "factor",
+"showSelectedlegendcolour": "factor",
+"PANEL": "factor" 
+},
+"PANEL": "1",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelectedlegendcolour",
+"PANEL",
+"group" 
+],
+"nextgeom": "geom7_point_ts" 
+},
+"geom7_point_ts": {
+ "geom": "point",
+"classed": "geom7_point_ts",
+"aes": {
+ "x": "fertility.rate",
+"y": "year",
+"colour": "region",
+"size": "population",
+"showSelected": "country",
+"clickSelects": "country",
+"showSelectedlegendcolour": "region" 
+},
+"params": {
+ "na.rm": false 
+},
+"subset_order": [
+ "showSelected",
+"showSelectedlegendcolour",
+"PANEL" 
+],
+"types": {
+ "size": "numeric",
+"colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"showSelected": "factor",
+"clickSelects": "factor",
+"showSelectedlegendcolour": "factor",
+"PANEL": "factor",
+"fill": "rgb" 
+},
+"PANEL": "1",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelected",
+"showSelectedlegendcolour",
+"PANEL" 
+],
+"nextgeom": "geom8_point_ts" 
+},
+"geom8_point_ts": {
+ "geom": "point",
+"classed": "geom8_point_ts",
+"aes": {
+ "x": "fertility.rate",
+"y": "life.expectancy",
+"clickSelects": "country",
+"showSelected": "year",
+"colour": "region",
+"size": "population",
+"key": "country",
+"showSelectedlegendcolour": "region" 
+},
+"params": {
+ "na.rm": false 
+},
+"subset_order": [
+ "showSelectedlegendcolour",
+"PANEL" 
+],
+"types": {
+ "size": "numeric",
+"colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"clickSelects": "factor",
+"showSelected": "numeric",
+"key": "factor",
+"showSelectedlegendcolour": "factor",
+"PANEL": "factor",
+"fill": "rgb" 
+},
+"PANEL": "3",
+"chunks": {
+ "1960": 1,
+"1961": 2,
+"1962": 3,
+"1963": 4,
+"1964": 5,
+"1965": 6,
+"1966": 7,
+"1967": 8,
+"1968": 9,
+"1969": 10,
+"1970": 11,
+"1971": 12,
+"1972": 13,
+"1973": 14,
+"1974": 15,
+"1975": 16,
+"1976": 17,
+"1977": 18,
+"1978": 19,
+"1979": 20,
+"1980": 21,
+"1981": 22,
+"1982": 23,
+"1983": 24,
+"1984": 25,
+"1985": 26,
+"1986": 27,
+"1987": 28,
+"1988": 29,
+"1989": 30,
+"1990": 31,
+"1991": 32,
+"1992": 33,
+"1993": 34,
+"1994": 35,
+"1995": 36,
+"1996": 37,
+"1997": 38,
+"1998": 39,
+"1999": 40,
+"2000": 41,
+"2001": 42,
+"2002": 43,
+"2003": 44,
+"2004": 45,
+"2005": 46,
+"2006": 47,
+"2007": 48,
+"2008": 49,
+"2009": 50,
+"2010": 51,
+"2011": 52 
+},
+"total": 52,
+"chunk_order": [
+ "year" 
+],
+"nest_order": [
+ "showSelectedlegendcolour",
+"PANEL" 
+],
+"timeValues": [   1960,   1961,   1962,   1963,   1964,   1965,   1966,   1967,   1968,   1969,   1970,   1971,   1972,   1973,   1974,   1975,   1976,   1977,   1978,   1979,   1980,   1981,   1982,   1983,   1984,   1985,   1986,   1987,   1988,   1989,   1990,   1991,   1992,   1993,   1994,   1995,   1996,   1997,   1998,   1999,   2000,   2001,   2002,   2003,   2004,   2005,   2006,   2007,   2008,   2009,   2010,   2011 ],
+"nextgeom": "geom9_text_ts" 
+},
+"geom9_text_ts": {
+ "geom": "text",
+"classed": "geom9_text_ts",
+"aes": {
+ "x": "fertility.rate",
+"y": "life.expectancy",
+"label": "country",
+"showSelected": "country",
+"showSelected2": "year",
+"showSelected3": "region",
+"clickSelects": "country",
+"key": "country" 
+},
+"params": {
+ "parse": false 
+},
+"subset_order": [
+ "showSelected",
+"showSelected3",
+"PANEL" 
+],
+"types": {
+ "x": "numeric",
+"y": "numeric",
+"label": "factor",
+"showSelected": "factor",
+"showSelected2": "numeric",
+"showSelected3": "factor",
+"clickSelects": "factor",
+"key": "factor",
+"PANEL": "factor" 
+},
+"PANEL": "3",
+"chunks": {
+ "1960": 1,
+"1961": 2,
+"1962": 3,
+"1963": 4,
+"1964": 5,
+"1965": 6,
+"1966": 7,
+"1967": 8,
+"1968": 9,
+"1969": 10,
+"1970": 11,
+"1971": 12,
+"1972": 13,
+"1973": 14,
+"1974": 15,
+"1975": 16,
+"1976": 17,
+"1977": 18,
+"1978": 19,
+"1979": 20,
+"1980": 21,
+"1981": 22,
+"1982": 23,
+"1983": 24,
+"1984": 25,
+"1985": 26,
+"1986": 27,
+"1987": 28,
+"1988": 29,
+"1989": 30,
+"1990": 31,
+"1991": 32,
+"1992": 33,
+"1993": 34,
+"1994": 35,
+"1995": 36,
+"1996": 37,
+"1997": 38,
+"1998": 39,
+"1999": 40,
+"2000": 41,
+"2001": 42,
+"2002": 43,
+"2003": 44,
+"2004": 45,
+"2005": 46,
+"2006": 47,
+"2007": 48,
+"2008": 49,
+"2009": 50,
+"2010": 51,
+"2011": 52 
+},
+"total": 52,
+"chunk_order": [
+ "year" 
+],
+"nest_order": [
+ "showSelected",
+"showSelected3",
+"PANEL" 
+],
+"timeValues": [   1960,   1961,   1962,   1963,   1964,   1965,   1966,   1967,   1968,   1969,   1970,   1971,   1972,   1973,   1974,   1975,   1976,   1977,   1978,   1979,   1980,   1981,   1982,   1983,   1984,   1985,   1986,   1987,   1988,   1989,   1990,   1991,   1992,   1993,   1994,   1995,   1996,   1997,   1998,   1999,   2000,   2001,   2002,   2003,   2004,   2005,   2006,   2007,   2008,   2009,   2010,   2011 ],
+"nextgeom": "geom10_text_ts" 
+},
+"geom10_text_ts": {
+ "geom": "text",
+"classed": "geom10_text_ts",
+"aes": {
+ "x": "5",
+"y": "85",
+"label": "paste0(\"year = \", year)",
+"showSelected": "year" 
+},
+"params": {
+ "parse": false 
+},
+"subset_order": [
+ "showSelected",
+"PANEL" 
+],
+"types": {
+ "x": "numeric",
+"y": "numeric",
+"label": "factor",
+"showSelected": "numeric",
+"PANEL": "factor" 
+},
+"PANEL": "3",
+"chunks": 1,
+"total": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelected",
+"PANEL" 
+],
+"timeValues": [   1960,   1961,   1962,   1963,   1964,   1965,   1966,   1967,   1968,   1969,   1970,   1971,   1972,   1973,   1974,   1975,   1976,   1977,   1978,   1979,   1980,   1981,   1982,   1983,   1984,   1985,   1986,   1987,   1988,   1989,   1990,   1991,   1992,   1993,   1994,   1995,   1996,   1997,   1998,   1999,   2000,   2001,   2002,   2003,   2004,   2005,   2006,   2007,   2008,   2009,   2010,   2011 ] 
+} 
+},
+"time": {
+ "variable": "year",
+"ms":   3000,
+"variable": "year",
+"ms":   3000,
+"sequence": [ "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011" ] 
+},
+"duration": {
+ "year":   1000 
+},
+"selectors": {
+ "year": {
+ "selected": "1975",
+"type": "single",
+"levels": [ "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011" ],
+"update": [
+ "geom1_tallrect_ts",
+"geom5_widerect_ts",
+"geom8_point_ts",
+"geom9_text_ts",
+"geom10_text_ts" 
+],
+"chunks": "year",
+"duration":   1000 
+},
+"country": {
+ "selected": [ "United States", "Vietnam" ],
+"type": "multiple",
+"levels": [ "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Albania", "Armenia", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "Bermuda", "Brunei Darussalam", "Bolivia", "Brazil", "Bahamas, The", "Bhutan", "Botswana", "Belarus", "Belize", "Canada", "Congo, Dem. Rep.", "Central African Republic", "Congo, Rep.", "Switzerland", "Cote d'Ivoire", "Chile", "Cameroon", "China", "Colombia", "Costa Rica", "Cuba", "Cape Verde", "Curacao", "Cyprus", "Czech Republic", "Germany", "Djibouti", "Denmark", "Dominica", "Dominican Republic", "Algeria", "Ecuador", "Estonia", "Egypt, Arab Rep.", "Eritrea", "Spain", "Ethiopia", "Finland", "Fiji", "Micronesia, Fed. Sts.", "France", "Gabon", "United Kingdom", "Grenada", "Georgia", "Ghana", "Greenland", "Gambia, The", "Guinea", "Equatorial Guinea", "Greece", "Guatemala", "Guam", "Guinea-Bissau", "Guyana", "Hong Kong SAR, China", "Honduras", "Croatia", "Haiti", "Hungary", "Indonesia", "Ireland", "Israel", "Isle of Man", "India", "Iraq", "Iran, Islamic Rep.", "Iceland", "Italy", "Channel Islands", "Jamaica", "Jordan", "Japan", "Kenya", "Kyrgyz Republic", "Cambodia", "Kiribati", "Comoros", "St. Kitts and Nevis", "Korea, Dem. Rep.", "Korea, Rep.", "Kosovo", "Kuwait", "Kazakhstan", "Lao PDR", "Lebanon", "St. Lucia", "Sri Lanka", "Liberia", "Lesotho", "Lithuania", "Luxembourg", "Latvia", "Libya", "Morocco", "Moldova", "Montenegro", "Madagascar", "Marshall Islands", "Macedonia, FYR", "Mali", "Myanmar", "Mongolia", "Macao SAR, China", "Mauritania", "Malta", "Mauritius", "Maldives", "Malawi", "Mexico", "Malaysia", "Mozambique", "Namibia", "New Caledonia", "Niger", "Nigeria", "Nicaragua", "Netherlands", "Norway", "Nepal", "New Zealand", "Oman", "Panama", "Peru", "French Polynesia", "Papua New Guinea", "Philippines", "Pakistan", "Poland", "Puerto Rico", "West Bank and Gaza", "Portugal", "Palau", "Paraguay", "Qatar", "Romania", "Serbia", "Russian Federation", "Rwanda", "Saudi Arabia", "Solomon Islands", "Seychelles", "Sudan", "Sweden", "Singapore", "Slovenia", "Slovak Republic", "Sierra Leone", "Senegal", "Somalia", "Suriname", "South Sudan", "Sao Tome and Principe", "El Salvador", "Sint Maarten (Dutch part)", "Syrian Arab Republic", "Swaziland", "Chad", "Togo", "Thailand", "Tajikistan", "Timor-Leste", "Turkmenistan", "Tunisia", "Tonga", "Turkey", "Trinidad and Tobago", "Tanzania", "Ukraine", "Uganda", "United States", "Uruguay", "Uzbekistan", "St. Vincent and the Grenadines", "Venezuela, RB", "Virgin Islands (U.S.)", "Vietnam", "Vanuatu", "Samoa", "Yemen, Rep.", "South Africa", "Zambia", "Zimbabwe" ],
+"update": [
+ "geom2_line_ts",
+"geom3_point_ts",
+"geom3_point_ts",
+"geom4_text_ts",
+"geom4_text_ts",
+"geom6_line_ts",
+"geom7_point_ts",
+"geom7_point_ts",
+"geom8_point_ts",
+"geom9_text_ts",
+"geom9_text_ts" 
+] 
+},
+"region": {
+ "selected": [ "Middle East & North Africa (all income levels)", "South Asia", "Latin America & Caribbean (all income levels)", "Europe & Central Asia (all income levels)", "Sub-Saharan Africa (all income levels)", "East Asia & Pacific (all income levels)", "North America" ],
+"type": "multiple",
+"levels": [ "Middle East & North Africa (all income levels)", "South Asia", "Latin America & Caribbean (all income levels)", "Europe & Central Asia (all income levels)", "Sub-Saharan Africa (all income levels)", "East Asia & Pacific (all income levels)", "North America" ],
+"update": [
+ "geom2_line_ts",
+"geom3_point_ts",
+"geom4_text_ts",
+"geom6_line_ts",
+"geom7_point_ts",
+"geom8_point_ts",
+"geom9_text_ts" 
+] 
+} 
+},
+"plots": {
+ "ts": {
+ "legend": {
+ "population": {
+ "guide": "legend",
+"geoms": [ "point", "point", "point" ],
+"title": "population",
+"vars": "population",
+"legend_type": "size",
+"entries": [
+ {
+ "pointsize":      2,
+"pointshape":     16,
+"pointcolour": "#000000",
+"label": [ "1e+05" ] 
+},
+{
+ "pointsize":      2,
+"pointshape":     16,
+"pointcolour": "#000000",
+"label": [ "1e+06" ] 
+},
+{
+ "pointsize":   3.61,
+"pointshape":     16,
+"pointcolour": "#000000",
+"label": [ "1e+07" ] 
+},
+{
+ "pointsize": 6.8965,
+"pointshape":     16,
+"pointcolour": "#000000",
+"label": [ "1e+08" ] 
+},
+{
+ "pointsize": 17.526,
+"pointshape":     16,
+"pointcolour": "#000000",
+"label": [ "1e+09" ] 
+} 
+] 
+},
+"region": {
+ "guide": "legend",
+"geoms": [ "path", "point", "text", "path", "point", "point" ],
+"title": "region",
+"vars": "region",
+"legend_type": "colour",
+"entries": [
+ {
+ "pathcolour": "#F8766D",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "East Asia & Pacific (all income levels)" ],
+"pointcolour": "#F8766D",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#F8766D",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+},
+{
+ "pathcolour": "#C49A00",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "Europe & Central Asia (all income levels)" ],
+"pointcolour": "#C49A00",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#C49A00",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+},
+{
+ "pathcolour": "#53B400",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "Latin America & Caribbean (all income levels)" ],
+"pointcolour": "#53B400",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#53B400",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+},
+{
+ "pathcolour": "#00C094",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "Middle East & North Africa (all income levels)" ],
+"pointcolour": "#00C094",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#00C094",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+},
+{
+ "pathcolour": "#00B6EB",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "North America" ],
+"pointcolour": "#00B6EB",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#00B6EB",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+},
+{
+ "pathcolour": "#A58AFF",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "South Asia" ],
+"pointcolour": "#A58AFF",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#A58AFF",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+},
+{
+ "pathcolour": "#FB61D7",
+"pathsize":      4,
+"pathlinetype":      1,
+"pathalpha":    0.6,
+"label": [ "Sub-Saharan Africa (all income levels)" ],
+"pointcolour": "#FB61D7",
+"pointshape":     16,
+"pointsize":      2,
+"textcolour": "#FB61D7",
+"textsize":      5,
+"textangle":      0,
+"texthjust":      1,
+"textvjust":    0.5,
+"textfamily": "",
+"textfontface":      1,
+"textlineheight":    1.2 
+} 
+] 
+} 
+},
+"strips": {
+ "right": [
+ "",
+"Years",
+"",
+"Life expectancy" 
+],
+"top": [
+ "Fertility rate",
+"Years",
+"",
+"" 
+],
+"n": {
+ "top":      1,
+"right":      1 
+} 
+},
+"layout": {
+ "PANEL": [ "1", "2", "3", "4" ],
+"ROW": [ 1, 1, 2, 2 ],
+"COL": [ 1, 2, 1, 2 ],
+"side": [ "Years", "Years", "Life expectancy", "Life expectancy" ],
+"top": [ "Fertility rate", "Years", "Fertility rate", "Years" ],
+"SCALE_X": [ 1, 2, 1, 2 ],
+"SCALE_Y": [ 1, 1, 2, 2 ],
+"AXIS_Y": [ true, false, true, false ],
+"AXIS_X": [ false, false, true, true ],
+"coord_fixed": [ false, false, false, false ],
+"width_proportion": [    0.5,    0.5,    0.5,    0.5 ],
+"height_proportion": [    0.5,    0.5,    0.5,    0.5 ] 
+},
+"geoms": [
+ "geom1_tallrect_ts",
+"geom2_line_ts",
+"geom3_point_ts",
+"geom4_text_ts",
+"geom5_widerect_ts",
+"geom6_line_ts",
+"geom7_point_ts",
+"geom8_point_ts",
+"geom9_text_ts",
+"geom10_text_ts" 
+],
+"panel_background": {
+ "fill": "#FFFFFF",
+"colour": "transparent",
+"size":    0.5,
+"linetype":      1 
+},
+"panel_border": {
+ "fill": "transparent",
+"colour": "#7F7F7F",
+"size":    0.5,
+"linetype":      1 
+},
+"grid_major": {
+ "colour": "#E5E5E5",
+"size":    0.2,
+"linetype":      1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ 0.22469,
+0.49609,
+0.76749 
+],
+"y": [
+ 0.054196,
+0.22902,
+0.40385,
+0.57867,
+0.7535,
+0.92832 
+] 
+} 
+},
+"grid_minor": {
+ "colour": "#FAFAFA",
+"size":    0.5,
+"linetype":      1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ 0.088988,
+0.36039,
+0.63179,
+0.9032 
+],
+"y": [
+ 0.14161,
+0.31643,
+0.49126,
+0.66608,
+0.84091 
+] 
+} 
+},
+"axis1": {
+ "x": [
+ 0.22469,
+0.49609,
+0.76749 
+],
+"xlab": [
+ "2.5",
+"5.0",
+"7.5" 
+],
+"xrange": [ 0.4303, 9.6417 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.054196,
+0.22902,
+0.40385,
+0.57867,
+0.7535,
+0.92832 
+],
+"ylab": [
+ "1960",
+"1970",
+"1980",
+"1990",
+"2000",
+"2010" 
+],
+"yrange": [ 1956.9, 2014.1 ],
+"yline": true,
+"yticks": true 
+},
+"axis2": {
+ "x": [
+ 0.079439,
+0.24936,
+0.41929,
+0.58921,
+0.75913,
+0.92906 
+],
+"xlab": [
+ "1960",
+"1970",
+"1980",
+"1990",
+"2000",
+"2010" 
+],
+"xrange": [ 1955.3, 2014.2 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.054196,
+0.22902,
+0.40385,
+0.57867,
+0.7535,
+0.92832 
+],
+"ylab": [
+ "1960",
+"1970",
+"1980",
+"1990",
+"2000",
+"2010" 
+],
+"yrange": [ 1956.9, 2014.1 ],
+"yline": true,
+"yticks": true 
+},
+"axis3": {
+ "x": [
+ 0.22469,
+0.49609,
+0.76749 
+],
+"xlab": [
+ "2.5",
+"5.0",
+"7.5" 
+],
+"xrange": [ 0.4303, 9.6417 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.25084,
+0.56246,
+0.87409 
+],
+"ylab": [
+ "40",
+"60",
+"80" 
+],
+"yrange": [ 23.901, 88.081 ],
+"yline": true,
+"yticks": true 
+},
+"axis4": {
+ "x": [
+ 0.079439,
+0.24936,
+0.41929,
+0.58921,
+0.75913,
+0.92906 
+],
+"xlab": [
+ "1960",
+"1970",
+"1980",
+"1990",
+"2000",
+"2010" 
+],
+"xrange": [ 1955.3, 2014.2 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.25084,
+0.56246,
+0.87409 
+],
+"ylab": [
+ "40",
+"60",
+"80" 
+],
+"yrange": [ 23.901, 88.081 ],
+"yline": true,
+"yticks": true 
+},
+"xtitle": "",
+"xanchor": "middle",
+"xangle":      0,
+"ytitle": "",
+"yanchor": "end",
+"yangle":      0,
+"xlabs": [
+ "2.5",
+"5.0",
+"7.5",
+"1960",
+"1970",
+"1980",
+"1990",
+"2000",
+"2010" 
+],
+"ylabs": [
+ "1960",
+"1970",
+"1980",
+"1990",
+"2000",
+"2010",
+"40",
+"60",
+"80" 
+],
+"options": {
+ "width":   1000,
+"height":    800 
+} 
+} 
+},
+"title": "World Bank data (multiple selection, facets)" 
+}
