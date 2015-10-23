@@ -4,5 +4,5 @@
 shiny/
 *index_cache/
 *cache/
-
+intro/babynames*
 .Rproj.user

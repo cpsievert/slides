@@ -1,0 +1,363 @@
+---
+title: "Hello woRld"
+subtitle: "Follow along at <http://cpsievert.github.io/slides/intro>"
+author: "Carson Sievert"
+date: "`r Sys.Date()`"
+output:
+  ioslides_presentation:
+    transition: default
+    widescreen: true
+css:
+  styles.css
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  cache = FALSE,
+  fig.height = 2,
+  fig.width = 5
+)
+```
+
+# With your neighbor, list some things R _is_ and _does_
+
+### R is ...
+### R does ...
+
+## R is ...
+
+> - __Free__ to use
+> - __Extensible__
+    * Over 7300 user contributed add-on packages currently on CRAN!
+> - __Powerful__
+    * With the right tools, get more work done, faster.
+> - __Flexible__
+    * Not a question of _can_, but _how_.
+> - __Frustrating__
+    * Flexibility comes at a cost (easy to shoot yourself in the foot!).
+
+## R does ...
+
+* __Graphics, statistics, machine learning, etc.__
+* __Data acquisition, munging, management__
+* __Literate programming (dynamic reports)__
+* __Web applications__
+
+(This roughly serves as our outline)
+
+```{r, eval = FALSE, echo = FALSE}
+# devtools::install_github("metacran/crandb")
+# pkgs <- crandb::list_packages(limit = 999999)
+# length(pkgs)
+# [1] 7330
+```
+
+## Obligatory economics example
+
+US economic time series data bundled with __ggplot2__, but obtained from <http://research.stlouisfed.org/fred2>.
+
+```{r}
+data(economics, package = "ggplot2")
+str(economics)
+```
+
+> - `str()` is quite possibly my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
+
+## Summary statistics
+
+```{r}
+summary(economics)
+```
+
+## Hello Linear/Additive Models!
+
+```{r}
+library(ggplot2)
+p <- ggplot(economics, aes(date, unemploy / pop)) + geom_line()
+```
+
+```{r, fig.show = 'hold'}
+p
+p + geom_smooth(method = "lm", se = F)
+p + geom_smooth(method = "loess", se = F)
+p + geom_smooth(method = "gam", formula = y ~ s(x, bs = "cr"), se = F)
+```
+
+## How did ggplot2 add that smoother?
+
+```{r}
+m <- lm((unemploy / pop) ~ date, data = economics)
+str(m)
+```
+
+---
+
+```{r, fig.height = 3, fig.width = 10}
+economics$yhat <- m$fitted.values
+ggplot(economics) + 
+  geom_line(aes(date, unemploy / pop)) +
+  geom_line(aes(date, yhat), color = "blue")
+```
+
+> - __Your turn__: Reconstruct the a loess smoother plot without `geom_smooth()` (hint: use `loess()`!). For extra credit, add standard error bounds.
+
+## Interactive and web-based!
+
+```{r, cache = FALSE}
+library(plotly)
+ggplotly()
+```
+
+```{r echo = FALSE}
+data(economics)
+```
+
+<!-- TODO
+Introduce tidy data??
+-->
+
+## Examine data structures with `str()`
+
+```{r}
+str(m)
+```
+
+## The broom package
+
+<li class="build">
+Add _observational-level_ model characteristics to your data with `augment`.
+
+```{r}
+library(broom)
+e <- augment(m, economics)
+head(e)
+```
+</li>
+
+---
+
+<li class="build">
+Obtain a `tidy` data frame of _term-level_ characteristics of your model
+
+```{r}
+tidy(m)
+```
+</li>
+
+<li class="build">
+Glance at _model-level_ characteristics
+
+```{r}
+glance(m)
+```
+</li>
+
+---
+
+* __broom__ supports many types of models
+
+<div align="center">
+<img src="http://varianceexplained.org/images/broom_slides/broom_slides.004.jpg" width="1000" height="600">
+</div>
+
+## Reshaping data
+
+<div align="center">
+<img src="http://andeekaplan.com/images/blog/01142014widevstall.png" width="900" height="600">
+</div>
+
+## Reshaping data with tidyr
+
+```{r}
+library(tidyr)
+e <- gather(economics, variable, value, -date)
+head(e)
+```
+
+---
+
+```{r, fig.height = 3, fig.width = 10}
+ggplot(e, aes(date, value)) + geom_line() +
+  facet_wrap(~ variable, scales = "free_y")
+```
+
+---
+
+## Pure functional programming
+
+> - Pure functions _modify_ a central object-type. 
+* For example, input a data frame and output another data frame
+
+<li class="build">
+<div align="center">
+<img src="pure.jpeg" width="900" height="300">
+</div>
+</li>
+
+> - __Your turn__: Can you think of any pure function(s) in R?
+
+## Pure functions in base R
+
+```{r}
+subset(
+  transform(
+    economics,
+    year = format(date, "%Y")
+  ),
+  year == 2000
+)
+```
+
+---
+
+<li class="build">
+* __magrittr's__ `%>%` operator makes it much easier to read a sequence of pure manipulations
+
+```{r, eval = FALSE}
+library(magrittr)
+economics %>%
+  transform(year = format(date, "%Y")) %>%
+  subset(year == 2000)
+```
+</li>
+
+<li class="build">
+```{r, eval = FALSE}
+# in general, this:
+f(g(x), y) 
+# equal this
+x %>% g() %>% f(y)
+```
+</li>
+
+## dplyr: A consistent grammar of data manipulation
+
+```{r}
+library(dplyr)
+economics %>%
+  mutate(year = format(date, "%Y")) %>%
+  filter(year == 2000)
+```
+
+## Split-apply-combine
+
+<div align="center">
+<img src="http://inundata.org/R_talks/meetup/images/splitapply.png" width="750" height="500">
+</div>
+
+Image by Karthik Ram -> <http://inundata.org/R_talks/meetup/images/splitapply.png>
+
+## Split-apply-combine in dplyr
+
+```{r}
+economics %>%
+  mutate(year = format(date, "%Y")) %>%
+  group_by(year) %>%
+  summarise(mpce = mean(pce))
+```
+
+## Your Turn
+
+> - Find the average annual personal savings rate (`psavert`)
+> - 
+
+```{r}
+economics %>%
+  mutate(year = format(date, "%Y")) %>%
+  group_by(year) %>%
+  summarise(mpce = mean(psavert))
+```
+
+
+## A new example: babynames
+
+```{r}
+library(babynames)
+head(babynames)
+dim(babynames)
+```
+
+## dplyr loves databases
+
+```{r, eval = FALSE}
+db <- src_sqlite("babynames.sqlite3", create = TRUE)
+copy_to(db, babynames, temporary = FALSE)
+```
+
+```{r, echo = FALSE, cache = FALSE}
+db <- src_sqlite("babynames.sqlite3")
+```
+
+```{r}
+db
+tbl(db, "babynames")
+```
+
+## Send computation to the data
+
+```{r}
+h <- db %>% 
+  tbl("babynames") %>%
+  filter(name == "Hilary")
+```
+
+```{r}
+class(h)
+h$query
+```
+
+```{r}
+# execute SQL command and bring into R
+hc <- collect(h)
+class(hc)
+```
+
+
+---
+
+```{r, fig.height = 3, fig.width = 10, cache = FALSE, warning = FALSE}
+tbl(db, "babynames") %>%
+  filter(name == "Hilary") %>%
+  collect() %>%
+  plot_ly(x = year, y = prop, color = sex, colors = c("blue", "pink"))
+```
+
+---
+
+```{r, eval = FALSE}
+library(shiny)
+library(babynames)
+library(ggplot2)
+ui <- bootstrapPage(
+  selectizeInput(
+    inputId = 'name', 
+    label = 'Enter a name', 
+    choices = unique(babynames$name),
+    selected = "Hadley",
+    multiple = TRUE
+  ),
+  plotOutput('plot')
+)
+server <- function(input, output) {
+  output$plot <- renderPlot({ 
+    dat <- subset(babynames, name %in% input$name)
+    ggplot(dat, aes(year, prop, colour = sex)) + 
+      geom_line() + facet_wrap(~ name)
+  })
+}
+runApp(
+  shinyApp(ui, server)
+)
+```
+
+## Speed up version
+
+
+```{r, eval = FALSE}
+saveRDS(unique(babynames$name), file = "babynames_fast/names.rds")
+DBI::dbSendQuery(db$con, 'CREATE INDEX nms ON babynames(name)')
+```
+
+
+## Data Acquisition
