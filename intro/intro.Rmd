@@ -155,10 +155,10 @@ methods(predict)
 
 ---
 
-`summary()` is another useful generic function.
+`summary()` is another useful generic function. Turns out `summary.Arima()` doesn't exist in base `R`, but Rob and George provide one for us :)
 
 ```{r}
-ar1
+library(forecast)
 summary(ar1)
 ```
 
@@ -171,42 +171,36 @@ methods(summary)
 ---
 
 <ul class="build">
-**Your Turn**: Have a look at `?predict` and `?predict.Arima`. Use our `ar1` model to forecast 100 steps ahead.
+**Your Turn**: Have a look over `?predict` and `?predict.Arima`. Forecast 100 steps ahead using the `ar1` model.
 
 ```{r}
 f <- predict(ar1, n.ahead = 100)
 str(f)
 ```
 
-
-
-</ul>
-
-
-## Plotting forecases
-
-<ul class="build">
+In order to plot our forecast, we'll need the forecasted dates.
 
 ```{r}
-# monthly observations
-head(economics$date)
+head(economics$date, 4)
 ```
 
 ```{r}
 dates <- seq(max(economics$date), length.out = 100, by = "1 month")
 df <- data.frame(f, date = dates)
-str(df)
 ```
 
-```{r}
+</ul>
+
+
+## Plotting forecasts
+
+```{r, fig.height = 3, fig.width = 10}
 ggplot() + 
   geom_line(data = economics, aes(date, unemploy / pop)) +
   geom_line(data = df, aes(date, pred), color = "blue") +
   geom_ribbon(data = df, aes(date, ymax = pred + se, ymin = pred - se), 
-              fill = "grey", alpha = 0.2)
+              fill = "grey", alpha = 0.4)
 ```
-
-</ul>
 
 ## Interactive and web-based!
 
@@ -215,75 +209,35 @@ library(plotly)
 ggplotly()
 ```
 
-```{r echo = FALSE}
-data(economics)
-```
-
-<!-- TODO
-Introduce tidy data??
--->
-
-## Examine data structures with `str()`
-
-```{r}
-str(m)
-```
-
-## The broom package
-
-<li class="build">
-Add _observational-level_ model characteristics to your data with `augment`.
-
-```{r}
-library(broom)
-e <- augment(m, economics)
-head(e)
-```
-</li>
-
----
-
-<li class="build">
-Obtain a `tidy` data frame of _term-level_ characteristics of your model
-
-```{r}
-tidy(m)
-```
-</li>
-
-<li class="build">
-Glance at _model-level_ characteristics
-
-```{r}
-glance(m)
-```
-</li>
-
----
-
-* __broom__ supports many types of models
-
-<div align="center">
-<img src="http://varianceexplained.org/images/broom_slides/broom_slides.004.jpg" width="1000" height="600">
-</div>
-
 ## Reshaping data
 
 <div align="center">
-<img src="http://andeekaplan.com/images/blog/01142014widevstall.png" width="900" height="600">
+  <img src="reshape.png" width="900" height="500">
 </div>
 
-## Reshaping data with tidyr
+Image by Andee Kaplan -> <http://andeekaplan.com/images/blog/01142014widevstall.png>
+
+---
+
+```{r, echo = FALSE}
+data(economics)
+```
+
+<ul class="build">
+```{r}
+head(economics)
+```
 
 ```{r}
 library(tidyr)
 e <- gather(economics, variable, value, -date)
 head(e)
 ```
+</ul>
 
 ---
 
-```{r, fig.height = 3, fig.width = 10}
+```{r, fig.height = 5.5, fig.width = 10}
 ggplot(e, aes(date, value)) + geom_line() +
   facet_wrap(~ variable, scales = "free_y")
 ```
@@ -292,16 +246,17 @@ ggplot(e, aes(date, value)) + geom_line() +
 
 ## Pure functional programming
 
-> - Pure functions _modify_ a central object-type. 
-* For example, input a data frame and output another data frame
+<ul class="build">
+Pure functions _modify_ a central object-type (e.g., input a data frame and output another data frame)
 
-<li class="build">
 <div align="center">
-<img src="pure.jpeg" width="900" height="300">
+  <img src="pure.jpeg" width="900" height="300"></img>
 </div>
-</li>
-
-> - __Your turn__: Can you think of any pure function(s) in R?
+</ul>
+  
+<ul class="build">
+Your turn: Have we encountered any 'pure' function(s)? Can you think of any other pure functions?
+</ul>
 
 ## Pure functions in base R
 
@@ -317,8 +272,8 @@ subset(
 
 ---
 
-<li class="build">
-* __magrittr's__ `%>%` operator makes it much easier to read a sequence of pure manipulations
+<ul class="build">
+__magrittr's__ `%>%` operator makes it much easier to read a sequence of pure manipulations
 
 ```{r, eval = FALSE}
 library(magrittr)
@@ -326,16 +281,14 @@ economics %>%
   transform(year = format(date, "%Y")) %>%
   subset(year == 2000)
 ```
-</li>
 
-<li class="build">
 ```{r, eval = FALSE}
 # in general, this:
 f(g(x), y) 
 # equal this
 x %>% g() %>% f(y)
 ```
-</li>
+</ul>
 
 ## dplyr: A consistent grammar of data manipulation
 

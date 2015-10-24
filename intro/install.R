@@ -6,7 +6,6 @@
 
 install.packages("htmlwidgets")
 install.packages("ggplot2")
-install.packages("broom")
 install.packages("tidyr")
 install.packages("dplyr")
 install.packages("shiny")
@@ -20,7 +19,6 @@ install.packages("lubridate")
 devtools::install_github("ropensci/plotly@htmlwidgets")
 
 library("ggplot2")
-library("broom")
 library("tidyr")
 library("dplyr")
 library("shiny")
