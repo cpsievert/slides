@@ -12,6 +12,7 @@ css:
 ---
 
 ```{r setup, include = FALSE}
+library(methods)
 knitr::opts_chunk$set(
   message = FALSE,
   cache = FALSE,
@@ -55,7 +56,7 @@ knitr::opts_chunk$set(
 
 ## Obligatory economics example
 
-US economic time series data bundled with __ggplot2__, but obtained from <http://research.stlouisfed.org/fred2>.
+US economic time series data bundled with __ggplot2__:
 
 ```{r}
 data(economics, package = "ggplot2")
@@ -64,18 +65,32 @@ str(economics)
 
 > - `str()` is quite possibly my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
 
-## Summary statistics
+## Getting Help
 
-```{r}
-summary(economics)
+Prefix any function with `?` to read more about it.
+
+```{r, eval = FALSE}
+?str
+```
+
+Data sets distributed with packages should also be documented
+
+```{r, eval = FALSE}
+?economics
+```
+
+__Your Turn__: Read the variable descriptions for `economics`. Can you think of a interesting/informative function of these variable(s)?
+
+## Hello ggplot2
+
+```{r, fig.height = 3, fig.width = 10}
+library(ggplot2)
+p <- ggplot(economics, aes(date, unemploy / pop)) + 
+  geom_line()
+p
 ```
 
 ## Hello Linear/Additive Models!
-
-```{r}
-library(ggplot2)
-p <- ggplot(economics, aes(date, unemploy / pop)) + geom_line()
-```
 
 ```{r, fig.show = 'hold'}
 p
@@ -100,7 +115,98 @@ ggplot(economics) +
   geom_line(aes(date, yhat), color = "blue")
 ```
 
-> - __Your turn__: Reconstruct the a loess smoother plot without `geom_smooth()` (hint: use `loess()`!). For extra credit, add standard error bounds.
+> - __Your Turn__: Make the loess smoother plot without `geom_smooth()` (hint: convert `date` to a numeric vector with `as.numeric()` and use `loess()`).
+
+## Time Series Analysis
+
+<ul class="build">
+
+`R` has a ton of support for time series analysis (see the [Task View](https://cran.r-project.org/web/views/TimeSeries.html)). 
+
+To create a time series (aka `"ts"`) object, use the `ts()` function
+
+```{r}
+r <- ts(economics$unemploy / economics$pop)
+str(r)
+class(r)
+ar1 <- arima(r, order = c(1, 0, 0))
+class(ar1)
+```
+</ul>
+
+---
+
+```{r}
+str(predict(ar1))
+```
+
+> - From `?predict`:
+    * `predict()` is a _generic function_ for predictions from the results of various model fitting functions. The function invokes particular _methods_ which depend on the class of the first argument.
+
+> - Since `class(ar1)` is `"Arima"`, `predict(ar1)` calls `predict.Arima()`.
+
+> - Base R comes with a bunch of prediction methods, and add-on packages can easily add new prediction methods for new classes.
+
+---
+
+```{r}
+methods(predict)
+```
+
+---
+
+`summary()` is another useful generic function.
+
+```{r}
+ar1
+summary(ar1)
+```
+
+---
+
+```{r}
+methods(summary)
+```
+
+---
+
+<ul class="build">
+**Your Turn**: Have a look at `?predict` and `?predict.Arima`. Use our `ar1` model to forecast 100 steps ahead.
+
+```{r}
+f <- predict(ar1, n.ahead = 100)
+str(f)
+```
+
+
+
+</ul>
+
+
+## Plotting forecases
+
+<ul class="build">
+
+```{r}
+# monthly observations
+head(economics$date)
+```
+
+```{r}
+dates <- seq(max(economics$date), length.out = 100, by = "1 month")
+df <- data.frame(f, date = dates)
+str(df)
+```
+
+```{r}
+ggplot() + 
+  geom_line(data = economics, aes(date, unemploy / pop)) +
+  geom_line(data = df, aes(date, pred), color = "blue") +
+  geom_ribbon(data = df, aes(date, ymax = pred + se, ymin = pred - se), 
+              fill = "grey", alpha = 0.2)
+```
+
+</ul>
 
 ## Interactive and web-based!
 
@@ -281,7 +387,7 @@ dim(babynames)
 ## dplyr loves databases
 
 ```{r, eval = FALSE}
-db <- src_sqlite("babynames.sqlite3", create = TRUE)
+db <- src_sqlite("intro/babynames.sqlite3", create = TRUE)
 copy_to(db, babynames, temporary = FALSE)
 ```
 
