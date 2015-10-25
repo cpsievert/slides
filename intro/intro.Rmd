@@ -170,9 +170,9 @@ methods(summary)
 
 ---
 
-<ul class="build">
 **Your Turn**: Have a look over `?predict` and `?predict.Arima`. Forecast 100 steps ahead using the `ar1` model.
 
+<ul class="build">
 ```{r}
 f <- predict(ar1, n.ahead = 100)
 str(f)
@@ -215,19 +215,18 @@ ggplotly()
   <img src="reshape.png" width="900" height="500">
 </div>
 
-Image by Andee Kaplan -> <http://andeekaplan.com/images/blog/01142014widevstall.png>
-
 ---
 
 ```{r, echo = FALSE}
 data(economics)
 ```
 
-<ul class="build">
+
 ```{r}
 head(economics)
 ```
 
+<ul class="build">
 ```{r}
 library(tidyr)
 e <- gather(economics, variable, value, -date)
@@ -242,24 +241,16 @@ ggplot(e, aes(date, value)) + geom_line() +
   facet_wrap(~ variable, scales = "free_y")
 ```
 
----
-
 ## Pure functional programming
 
-<ul class="build">
+
 Pure functions _modify_ a central object-type (e.g., input a data frame and output another data frame)
 
-<div align="center">
-  <img src="pure.jpeg" width="900" height="300"></img>
-</div>
-</ul>
-  
-<ul class="build">
-Your turn: Have we encountered any 'pure' function(s)? Can you think of any other pure functions?
-</ul>
+__Your turn__: Have we encountered any 'pure' function(s)? Can you think of any other pure functions?
 
 ## Pure functions in base R
 
+<ul class="build">
 ```{r}
 subset(
   transform(
@@ -269,6 +260,13 @@ subset(
   year == 2000
 )
 ```
+</ul>
+
+---
+
+<div align = "center">
+  <img src="pure.jpeg" width="900" height="300" />
+</div>
 
 ---
 
@@ -318,15 +316,16 @@ economics %>%
 
 ## Your Turn
 
-> - Find the average annual personal savings rate (`psavert`)
-> - 
+Find the average annual personal savings rate (`psavert`)
 
+<ul class="build">
 ```{r}
 economics %>%
   mutate(year = format(date, "%Y")) %>%
   group_by(year) %>%
   summarise(mpce = mean(psavert))
 ```
+</ul>
 
 
 ## A new example: babynames
@@ -355,6 +354,7 @@ tbl(db, "babynames")
 
 ## Send computation to the data
 
+<ul class="build">
 ```{r}
 h <- db %>% 
   tbl("babynames") %>%
@@ -365,22 +365,37 @@ h <- db %>%
 class(h)
 h$query
 ```
+</ul>
 
+---
+
+
+<ul class="build">
 ```{r}
 # execute SQL command and bring into R
 hc <- collect(h)
 class(hc)
 ```
 
+```{r}
+hc
+```
+</ul>
 
 ---
 
 ```{r, fig.height = 3, fig.width = 10, cache = FALSE, warning = FALSE}
-tbl(db, "babynames") %>%
-  filter(name == "Hilary") %>%
-  collect() %>%
-  plot_ly(x = year, y = prop, color = sex, colors = c("blue", "pink"))
+plot_ly(hc, x = year, y = prop, color = sex, colors = c("blue", "hotpink"))
 ```
+
+
+---
+
+<!-- TODO
+
+plotly + dplyr
+
+-->
 
 ---
 
