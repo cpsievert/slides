@@ -12,7 +12,6 @@ css:
 ---
 
 ```{r setup, include = FALSE}
-library(methods)
 knitr::opts_chunk$set(
   message = FALSE,
   cache = FALSE,
@@ -63,7 +62,7 @@ data(economics, package = "ggplot2")
 str(economics)
 ```
 
-> - `str()` is quite possibly my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
+> - `str()` is probably my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
 
 ## Getting Help
 
@@ -73,6 +72,29 @@ Prefix any function with `?` to read more about it.
 ?str
 ```
 
+<ul class="build">
+Reading source code is also a great way to learn `R`!
+
+```{r}
+nrow
+```
+</ul>
+
+---
+
+<ul class="build">
+What if you don't know what function(s) to use?
+
+Google! (I like to prefix "CRAN" in my search; others might suggest <http://www.rseek.org/>)
+
+Stackoverflow!
+
+<img src="so-raw.png" width="600" height="300">
+</ul>
+
+---
+
+<ul class="build">
 Data sets distributed with packages should also be documented
 
 ```{r, eval = FALSE}
@@ -80,6 +102,8 @@ Data sets distributed with packages should also be documented
 ```
 
 __Your Turn__: Read the variable descriptions for `economics`. Can you think of a interesting/informative function of these variable(s)?
+
+</ul>
 
 ## Hello ggplot2
 
@@ -270,7 +294,6 @@ subset(
 
 ---
 
-<ul class="build">
 __magrittr's__ `%>%` operator makes it much easier to read a sequence of pure manipulations
 
 ```{r, eval = FALSE}
@@ -280,6 +303,7 @@ economics %>%
   subset(year == 2000)
 ```
 
+<ul class="build">
 ```{r, eval = FALSE}
 # in general, this:
 f(g(x), y) 
