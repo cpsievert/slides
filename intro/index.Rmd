@@ -96,6 +96,7 @@ str(economics)
 ```
 
 * `str()` is probably my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
+
 > - __Your Turn__: Read the documentation for `economics`. Can you think of a interesting/informative function of these variable(s)?
 
 ## Hello ggplot2
@@ -347,6 +348,34 @@ head(babynames)
 dim(babynames)
 ```
 
+## Write/read flat files
+
+```{r, cache = TRUE}
+library(readr)
+bb_path <- tempfile(fileext = ".csv")
+write_csv(babynames, bb_path)
+read_csv(bb_path)
+```
+
+## Get other formats into R
+
+```{r, eval = FALSE}
+library(readxl)
+read_excel("my-spreadsheet.xls", sheet = "data")
+read_excel("my-spreadsheet.xls", sheet = 2)
+```
+
+```{r, eval = FALSE}
+library(haven)
+# SAS files
+read_sas("path/to/file")
+# SPSS files
+read_por("path/to/file")
+read_sav("path/to/file")
+# Stata files
+read_dta("path/to/file")
+```
+
 ## dplyr loves databases
 
 ```{r, eval = FALSE}
@@ -443,3 +472,8 @@ runApp(shinyApp(ui, server))
 ```
 
 
+# Thanks for coming!
+
+* Find me in Menzies E775
+* <https://github.com/cpsievert>
+* <https://twitter.com/cpsievert>
