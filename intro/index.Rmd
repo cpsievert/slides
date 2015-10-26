@@ -415,50 +415,47 @@ hc
 plot_ly(hc, x = year, y = prop, color = sex, colors = c("blue", "hotpink"))
 ```
 
+---
+
+```{r}
+popular <- babynames %>%
+  group_by(name) %>%
+  summarise(N = sum(n)) %>%
+  arrange(desc(N))
+popular
+```
 
 ---
 
-<!-- TODO
-
-plotly + dplyr
-
--->
+```{r}
+top <- top_n(popular, 1000)
+topnames <- subset(babynames, name %in% top[["name"]])
+topnames
+```
 
 ---
 
 ```{r, eval = FALSE}
 library(shiny)
-library(babynames)
 library(ggplot2)
 ui <- bootstrapPage(
   selectizeInput(
     inputId = 'name', 
     label = 'Enter a name', 
-    choices = unique(babynames$name),
-    selected = "Hadley",
+    choices = unique(topnames$name),
+    selected = "James",
     multiple = TRUE
   ),
   plotOutput('plot')
 )
 server <- function(input, output) {
   output$plot <- renderPlot({ 
-    dat <- subset(babynames, name %in% input$name)
+    dat <- subset(topnames, name %in% input$name)
     ggplot(dat, aes(year, prop, colour = sex)) + 
       geom_line() + facet_wrap(~ name)
   })
 }
-runApp(
-  shinyApp(ui, server)
-)
-```
-
-## Speed up version
-
-
-```{r, eval = FALSE}
-saveRDS(unique(babynames$name), file = "babynames_fast/names.rds")
-DBI::dbSendQuery(db$con, 'CREATE INDEX nms ON babynames(name)')
+runApp(shinyApp(ui, server))
 ```
 
 
-## Data Acquisition
