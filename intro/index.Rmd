@@ -53,9 +53,52 @@ knitr::opts_chunk$set(
 # [1] 7330
 ```
 
-## Obligatory economics example
 
-US economic time series data bundled with __ggplot2__:
+## Getting Help
+
+> - Prefix any function with `?` to read documentation.
+
+<ul class="build">
+```{r, eval = FALSE}
+?nrow
+```
+</ul>
+
+> - Reading source code is also a great way to learn `R`!
+
+<ul class="build">
+```{r}
+nrow
+```
+</ul>
+
+> - But what about _finding_ function(s) to help solve a problem???
+
+---
+
+<ul class="build">
+Google! (I usually prefix "CRAN" to my search; others might suggest <http://www.rseek.org/>)
+
+Ask your question on <http://stackoverflow.com/> (below is the # of questions asked per month)
+
+<img src="so-raw.png" width="800" height="450" />
+</ul>
+
+---
+
+<ul class="build">
+Chances are, someone has authored a package to help solve your problem.
+
+After installing a package, check to see if it has any vignettes explaining it's functionality (__dplyr__ has _awesome_ vignettes):
+
+```{r, eval = FALSE}
+browseVignettes("dplyr")
+```
+</ul>
+
+---
+
+## Obligatory economics example
 
 ```{r}
 data(economics, package = "ggplot2")
@@ -63,47 +106,7 @@ str(economics)
 ```
 
 > - `str()` is probably my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
-
-## Getting Help
-
-Prefix any function with `?` to read more about it.
-
-```{r, eval = FALSE}
-?str
-```
-
-<ul class="build">
-Reading source code is also a great way to learn `R`!
-
-```{r}
-nrow
-```
-</ul>
-
----
-
-<ul class="build">
-What if you don't know what function(s) to use?
-
-Google! (I like to prefix "CRAN" in my search; others might suggest <http://www.rseek.org/>)
-
-Stackoverflow!
-
-<img src="so-raw.png" width="600" height="300">
-</ul>
-
----
-
-<ul class="build">
-Data sets distributed with packages should also be documented
-
-```{r, eval = FALSE}
-?economics
-```
-
-__Your Turn__: Read the variable descriptions for `economics`. Can you think of a interesting/informative function of these variable(s)?
-
-</ul>
+> - __Your Turn__: Read the documentation for `economics`. Can you think of a interesting/informative function of these variable(s)?
 
 ## Hello ggplot2
 
