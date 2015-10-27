@@ -2,6 +2,7 @@
 *.Rhistory
 *.RData
 shiny/
+*index_files/
 *index_cache/
 *cache/
 intro/babynames*

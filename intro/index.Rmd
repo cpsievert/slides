@@ -37,6 +37,13 @@ knitr::opts_chunk$set(
 * __Frustrating__
     * Flexibility comes at a cost (easy to shoot yourself in the foot!).
 
+```{r, eval = FALSE, echo = FALSE}
+# devtools::install_github("metacran/crandb")
+# pkgs <- crandb::list_packages(limit = 999999)
+# length(pkgs)
+# [1] 7330
+```
+
 ## R does ...
 
 * __Graphics, statistics, machine learning, etc.__
@@ -46,43 +53,64 @@ knitr::opts_chunk$set(
 
 (This roughly serves as our outline)
 
-```{r, eval = FALSE, echo = FALSE}
-# devtools::install_github("metacran/crandb")
-# pkgs <- crandb::list_packages(limit = 999999)
-# length(pkgs)
-# [1] 7330
+## Some Basics
+
+* Combine values into a vector (or list), with `c()` (or `list()`)
+
+```{r}
+c(0, 1)
 ```
 
+* Assign values to a name with `<-` (or `=`)
+
+```{r}
+x <- c(0, 1)
+```
+
+* Most functions in `R` are vectorized:
+
+```{r}
+sum(x + 10)
+```
+
+* Although arcane at times, `R` has rich support for documentation, see `?sum`
+
+## Some Oddities
+
+* Yes, `+` is a function (which calls compiled C code)
+
+```{r}
+`+`
+```
+
+* What's that? You don't like addition? Me neither!
+
+```{r}
+"+" <- function(x, y) "I forgot how to add"
+1 + 2
+```
+
+* But seriously, don't "overload operators" unless you know what you're doing
+
+```{r}
+rm("+")
+```
+
+## Trust me
+
+<div align="center">
+  <img src="doge.png" width="300" height="500">
+</div>
 
 ## Getting Help
 
-* Prefix any function with `?` to read documentation.
-
-```{r, eval = FALSE}
-?nrow
-```
-
-* Reading source code is also a great way to learn `R`!
-
-```{r}
-nrow
-```
-
-* But what about _finding_ function(s) to help solve a problem???
-
----
+* Reading documentation only gets you so far. What about _finding_ function(s) and/or package(s) to help solve a problem???
 
 * Google! (I usually prefix "CRAN" to my search; others might suggest <http://www.rseek.org/>)
 
-* Ask your question on <http://stackoverflow.com/> (below is the # of questions asked per month)
+* Ask your question on a relevant StackExchange outlet such as  <http://stackoverflow.com/> or <http://stats.stackexchange.com/>
 
-<img src="so-raw.png" width="800" height="450" />
-
----
-
-* Chances are, someone has authored a package to help solve your problem.
-
-* After installing a package, check to see if it has any vignettes explaining it's functionality (__dplyr__ has _awesome_ vignettes):
+* It's becoming more and more popular to bundle "vignettes" with a package (__dplyr__ has _awesome_ vignettes)
 
 ```{r, eval = FALSE}
 browseVignettes("dplyr")
@@ -117,7 +145,7 @@ p + geom_smooth(method = "loess", se = F)
 p + geom_smooth(method = "gam", formula = y ~ s(x, bs = "cr"), se = F)
 ```
 
-## How did ggplot2 add that smoother?
+## How does `geom_smooth()` work?
 
 ```{r}
 m <- lm((unemploy / pop) ~ date, data = economics)
