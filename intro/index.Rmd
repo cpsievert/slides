@@ -199,7 +199,9 @@ The `forecast()` function in the __forecast__ package makes it easy to construct
 forecast(ar1, level = 95)
 ```
 
-```{r}
+---
+
+```{r, fig.height = 5.5, fig.width = 10}
 plot(forecast(ar1, level = 95))
 ```
 
