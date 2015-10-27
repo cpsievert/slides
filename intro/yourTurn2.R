@@ -1,0 +1,5 @@
+library(ggplot2)
+r <- ts(economics$unemploy / economics$pop)
+ar1 <- arima(r, order = c(1, 0, 0))
+f <- predict(ar1, n.ahead = 100)
+str(f)

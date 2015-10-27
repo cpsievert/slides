@@ -133,7 +133,7 @@ ggplot(economics) +
   geom_line(aes(date, yhat), color = "blue")
 ```
 
-> - __Your Turn__: Make the loess smoother plot without `geom_smooth()` (hint: convert `date` to a numeric vector with `as.numeric()` and use `loess()`).
+> - __Your Turn__: Make the loess smoother plot without `geom_smooth()` (hint: convert `date` to a numeric vector with `as.numeric()` and use `loess()`). For a solution, see [here](https://github.com/cpsievert/slides/blob/gh-pages/intro/yourTurn1.R)
 
 ## Time Series Analysis
 
@@ -170,7 +170,7 @@ methods(predict)
 
 ---
 
-`summary()` is another useful generic function. Turns out `summary.Arima()` doesn't exist in base `R`, but Rob and George provide one for us :)
+`summary()` is another useful generic function. Turns out `summary.Arima()` doesn't exist in base `R`, but the __forecast__ package provides one for us %^)
 
 ```{r}
 library(forecast)
@@ -185,43 +185,41 @@ methods(summary)
 
 ---
 
-**Your Turn**: Have a look over `?predict` and `?predict.Arima`. Forecast 100 steps ahead using the `ar1` model.
+**Your Turn**: 
 
-<ul class="build">
-```{r}
-f <- predict(ar1, n.ahead = 100)
-str(f)
-```
+> - Have a look over `?predict` and `?predict.Arima`. Forecast 10 steps ahead using the `ar1` model. See [here](https://github.com/cpsievert/slides/blob/gh-pages/intro/yourTurn2.R) for a solution.
+> - Have a look over `?forecast` and `?forecast.Arima`. How is `predict.Arima()` different from `forecast.Arima()`?
+> - **Warning**: Solution is on the next page, are you sure you want to continue?
 
-In order to plot our forecast, we'll need the forecasted dates.
+---
 
-```{r}
-head(economics$date, 4)
-```
+The `forecast()` function in the __forecast__ package makes it easy to construct and plot prediction intervals.
 
 ```{r}
-dates <- seq(max(economics$date), length.out = 100, by = "1 month")
-df <- data.frame(f, date = dates)
+forecast(ar1, level = 95)
 ```
 
-</ul>
-
-
-## Plotting forecasts
-
-```{r, fig.height = 3, fig.width = 10}
-ggplot() + 
-  geom_line(data = economics, aes(date, unemploy / pop)) +
-  geom_line(data = df, aes(date, pred), color = "blue") +
-  geom_ribbon(data = df, aes(date, ymax = pred + se, ymin = pred - se), 
-              fill = "grey", alpha = 0.4)
+```{r}
+plot(forecast(ar1, level = 95))
 ```
+
+---
+
+**Your Turn**: Can you reconstruct `plot(forecast(ar1, level = 95))` using __ggplot2__? Here are some hints:
+
+* `as.data.frame(forecast(ar1, level = 95))` gives you the forecast data. Modify the column names so they don't have spaces (see `?names`).
+* You'll need the corresponding forecast dates. See `?seq.Date` for creating a sequence of dates.
+* `geom_ribbon()` is helpful for plotting the uncertainty.
+
+See [here](https://gist.github.com/cpsievert/62d6f5ddcdb923324e2a) for a solution
+
 
 ## Interactive and web-based!
 
 ```{r, cache = FALSE}
-library(plotly)
-ggplotly()
+# this runs your turn solution script
+devtools::source_gist("62d6f5ddcdb923324e2a")
+plotly::ggplotly(p)
 ```
 
 ## Reshaping data
@@ -348,7 +346,7 @@ head(babynames)
 dim(babynames)
 ```
 
-## Write/read flat files
+## Write/read csv (or other flat files)
 
 ```{r, cache = TRUE}
 library(readr)
@@ -421,7 +419,7 @@ hc
 ---
 
 ```{r, fig.height = 3, fig.width = 10, cache = FALSE, warning = FALSE}
-plot_ly(hc, x = year, y = prop, color = sex, colors = c("blue", "hotpink"))
+plotly::plot_ly(hc, x = year, y = prop, color = sex, colors = c("blue", "hotpink"))
 ```
 
 ---
