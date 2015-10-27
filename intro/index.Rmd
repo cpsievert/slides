@@ -215,13 +215,16 @@ plot(forecast(ar1, level = 95))
 
 See [here](https://gist.github.com/cpsievert/62d6f5ddcdb923324e2a) for a solution
 
+```{r}
+# to run the your turn solution...
+devtools::source_gist("62d6f5ddcdb923324e2a")
+```
 
 ## Interactive and web-based!
 
 ```{r, cache = FALSE}
-# this runs your turn solution script
-devtools::source_gist("62d6f5ddcdb923324e2a")
-plotly::ggplotly(p)
+library(plotly)
+ggplotly(p)
 ```
 
 ## Reshaping data
@@ -421,7 +424,7 @@ hc
 ---
 
 ```{r, fig.height = 3, fig.width = 10, cache = FALSE, warning = FALSE}
-plotly::plot_ly(hc, x = year, y = prop, color = sex, colors = c("blue", "hotpink"))
+plot_ly(hc, x = year, y = prop, color = sex, colors = c("blue", "hotpink"))
 ```
 
 ---
