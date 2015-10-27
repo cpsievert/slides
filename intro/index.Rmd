@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
   message = FALSE,
   cache = FALSE,
   fig.height = 2,
-  fig.width = 5
+  fig.width = 5,
+  collapse = TRUE,
+  comment = "#>"
 )
 ```
 
@@ -55,7 +57,7 @@ knitr::opts_chunk$set(
 
 ## Some Basics
 
-* Combine values into a vector (or list), with `c()` (or `list()`)
+* Combine values into a vector with `c()`
 
 ```{r}
 c(0, 1)
@@ -67,13 +69,62 @@ c(0, 1)
 x <- c(0, 1)
 ```
 
-* Most functions in `R` are vectorized:
+* Avoid `for` loops and use built-in _vectorized_ functions
 
 ```{r}
 sum(x + 10)
 ```
 
 * Although arcane at times, `R` has rich support for documentation, see `?sum`
+
+---
+
+* Use `[` to extract elements of a vector.
+
+```{r}
+c("a", "b")[1]
+c("a", "b")[c(T, F)]
+```
+
+* Extract _named_ elements with `$`, `[[`, and/or `[`
+
+```{r}
+x <- list(
+  a = 10,
+  b = c(1, "2")
+)
+x$a
+x[["a"]]
+x["a"]
+```
+
+## Examining 'structure'
+
+* `str()` is probably my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
+
+```{r}
+str(x)
+```
+
+* Lists are heterogenous (elements can have different types)
+* Vectors are homogenous (elements have the same type)
+    * That's why `c(1, "2")` ends up being a character string.
+
+* If you'd like to know more, see Hadley Wickham's online chapters on [data structures](http://adv-r.had.co.nz/Data-structures.html) and [subsetting](http://adv-r.had.co.nz/Subsetting.html)
+
+## Getting Help
+
+* Reading documentation only gets you so far. What about _finding_ function(s) and/or package(s) to help solve a problem???
+
+* Google! (I usually prefix "CRAN" to my search; others might suggest <http://www.rseek.org/>)
+
+* Ask your question on a relevant StackExchange outlet such as  <http://stackoverflow.com/> or <http://stats.stackexchange.com/>
+
+* It's becoming more and more popular to bundle "vignettes" with a package (__dplyr__ has _awesome_ vignettes)
+
+```{r, eval = FALSE}
+browseVignettes("dplyr")
+```
 
 ## Some Oddities
 
@@ -102,28 +153,13 @@ rm("+")
   <img src="doge.png" width="300" height="500">
 </div>
 
-## Getting Help
-
-* Reading documentation only gets you so far. What about _finding_ function(s) and/or package(s) to help solve a problem???
-
-* Google! (I usually prefix "CRAN" to my search; others might suggest <http://www.rseek.org/>)
-
-* Ask your question on a relevant StackExchange outlet such as  <http://stackoverflow.com/> or <http://stats.stackexchange.com/>
-
-* It's becoming more and more popular to bundle "vignettes" with a package (__dplyr__ has _awesome_ vignettes)
-
-```{r, eval = FALSE}
-browseVignettes("dplyr")
-```
-
 ## Obligatory economics example
 
 ```{r}
 data(economics, package = "ggplot2")
+# data frames are essentially a list of vectors
 str(economics)
 ```
-
-* `str()` is probably my favorite `R` function. It shows you the "structure" of _any_ R object (and _everything_ in R is an object!!!)
 
 > - __Your Turn__: Read the documentation for `economics`. Can you think of a interesting/informative function of these variable(s)?
 
@@ -434,18 +470,9 @@ h <- db %>%
 ```{r}
 class(h)
 h$query
-```
-
----
-
-
-```{r}
-# execute SQL command and bring into R
+# execute SQL query and bring into R
 hc <- collect(h)
 class(hc)
-```
-
-```{r}
 hc
 ```
 
