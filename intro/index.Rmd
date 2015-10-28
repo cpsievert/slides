@@ -283,6 +283,8 @@ See [here](https://gist.github.com/cpsievert/62d6f5ddcdb923324e2a) for a solutio
 devtools::source_gist("62d6f5ddcdb923324e2a")
 ```
 
+---
+
 ## Interactive and web-based!
 
 ```{r, cache = FALSE}
