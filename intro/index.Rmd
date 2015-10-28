@@ -1,6 +1,5 @@
 ---
 title: "Hello woRld"
-subtitle: "Follow along at <http://cpsievert.github.io/slides/intro>"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output:
