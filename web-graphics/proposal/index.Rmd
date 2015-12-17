@@ -12,7 +12,14 @@ css:
 ---
 
 ```{r setup, echo = FALSE}
-knitr::opts_chunk$set(message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(
+  message = FALSE, 
+  fig.align = "center",
+  fig.width = 10,
+  fig.height = 4,
+  comment = "#>",
+  collapse = TRUE
+)
 ```
 
 ## Bio
@@ -48,29 +55,28 @@ knitr::opts_chunk$set(message = FALSE, eval = FALSE)
 
 * Why _interactive_ & _dynamic_ graphics? They help us:
     * Find high-dimensional, abstract relationships in data that may otherwise go unnoticed
-    * Diagnose models by visualizing them in the data space (Wickham, Cook, & Hofmann 2015)
-    * Explore and understand complicated fitted statistical model(s) (Example to follow)
+    * Diagnose models by plotting them in the data space (Wickham, Cook, & Hofmann 2015)
+    * Explore and understand complicated statistical model fit(s) (e.g., __LDAvis__ for LDA topic models)
     * Communicate/share our work with others in a compelling way
 
 * Why _web-based_?
     * simple to share, portable (web browser)
     * encourages composability
     * guide your audience by providing links to interesting selections/states
+    
+## Topic models and LDA
 
-## Latent Dirichlet Allocation (Blei, Ng, Jordan; 2003)
-
-<div align="center">
-  <img src="lda.png" width="800" height="400" />
-</div>
-
-In the digital humanities (& elsewhere), LDA is often used to "discover topics" in a large collection of text documents. How are researchers supposed to interpret these topics?
+* _Topic models_ are a collection of statistical models with the common goal of finding hidden structure in a collection of text documents.
+* For example,
+    * Given a document discussing 'sports', you're more likely to see the word 'baseball' in that document compared to a document discussing 'music' (and vice-versa for 'guitar').
+* Latent Dirichlet Allocation (LDA) is a topic model which allows documents to be mixtures of topics (Blei, Ng, Jordan; 2003). 
 
 ---
 
-### Generative Model
+### The Generative Model
 <p></p>
 1. For each document $d$, draw topic distribution $\theta_d \sim Dir(\alpha)$
-2. For each topic $k$, draw term distribution $\phi_k \sim Dir(\beta)$
+2. For each topic $k$, draw word distribution $\phi_k \sim Dir(\beta)$
 3. Let $N_d$ be # of words in doc $d$ and $n \in \{1, \dots, N_d\}$. For each word $w_{d, n}$:
     * Draw a (latent) topic, $z_{d, n} \sim Mult(1, \theta_d)$
     * Draw a word given topic, $w_{d, n} \sim Mult(1, \phi_{z_{d, n}})$
@@ -80,6 +86,13 @@ In the digital humanities (& elsewhere), LDA is often used to "discover topics" 
 * Griffiths & Steyvers (2004) derive a collapsed Gibbs sampler. Implemented in R packages __LDAtools__ (Shirley & Sievert, 2013) and __lda__ (Chang, 2015).
 * Wide array of fitting algorithms available in __topicmodels__ (Grun & Hornik, 2011) and __mallet__ (Mimno, 2013).
 
+## Model Output
+
+<div align="center">
+  <img src="lda.png" width="800" height="400" />
+</div>
+
+In the digital humanities (& elsewhere), LDA is often used to "discover topics" in a large collection of text documents. How are researchers supposed to interpret topics from this model output?
 
 ## Towards topic interpretation
 
@@ -144,9 +157,12 @@ The word "win" is probably an abbreviation for "windows" in topic 15. By hoverin
 
 * People who use LDA and want a tool for interpreting topics.
 * Combined __LDAvis__ and __pyLDAvis__ currently have 356 stars on GitHub (a measure of popularity).
-* I know a number of consultants and industry workers using it for both exploration and presentation.
-* Dr. Grant Arndt in the Department of Anthropology at Iowa State University  (and his research assistant) are using it as a research aid.
-* Enabling users to extract and communicate insight deriving from sophicated statistical models.
+* I know a number of consultants, industry workers, and educators using it for exploration, presentation, and teaching. Here are [a](https://www.youtube.com/watch?v=8ErRqpmagws) [few](https://www.youtube.com/watch?v=tGxW2BzC_DU) [videos](https://www.youtube.com/watch?v=kzmf6mOCm5M).
+* Dr. Grant Arndt in the Department of Anthropology at Iowa State University (and his research assistant) are using it as a research aid.
+
+### Why is this important?
+
+* We're enabling analysts to gain insight from sophisticated statistical models, communicate their results, and teach others.
 
 ## We need better tools
 
@@ -158,7 +174,7 @@ The word "win" is probably an abbreviation for "windows" in topic 15. By hoverin
 
 ---
 
-```{r, eval = TRUE, fig.align = 'center', fig.width = 6}
+```{r, fig.align = 'center', fig.width = 6}
 library(ggplot2)
 p <- qplot(data = iris, x = Sepal.Width, y = Sepal.Length, color = Species)
 p
@@ -166,30 +182,22 @@ p
 
 ---
 
-```{r}
+```{r, eval = FALSE}
 library(plotly)
 ggplotly(p)
 ```
 
-<div align="center">
-  <a href="plotly.html"> 
-    <img src="plotly1.png" width="500" height="400" />
-  </a>
-</div>
+```{r, echo = FALSE}
+library(plotly)
+ggplotly(p) %>% layout(hovermode = "closest")
+```
 
 ---
 
 ```{r}
 library(animint)
-animint2dir(list(plot = p))
+structure(list(plot = p), class = "animint")
 ```
-
-
-<div align="center">
-  <a href="../wehi/animint/"> 
-    <img src="../wehi/animint.png" width="500" height="400" />
-  </a>
-</div>
 
 ---
 
@@ -246,58 +254,100 @@ myWrapper <- function(...) {
 
 ```{r}
 library(plotly)
-plot_ly(z = volcano, type = "surface")
+plot_ly(economics, x = date, y = unemploy / pop)
 ```
 
-<div align="center">
-  <a href="../wehi/plotly3/"> 
-    <img src="../wehi/plotly3.png" width="500" height="400" />
-  </a>
-</div>
+---
+
+```r
+p <- plot_ly(economics, x = date, y = unemploy / pop)
+str(p) 
+```
+
+```r
+#> Classes ‘plotly’ and 'data.frame':	478 obs. of  6 variables:
+#>  $ date    : Date, format: "1967-06-30" "1967-07-31" ...
+#>  $ pce     : num  508 511 517 513 518 ...
+#>  $ pop     : int  198712 198911 199113 199311 199498 199657 199808 199920 200056 200208 ...
+#>  $ psavert : num  9.8 9.8 9 9.8 9.7 9.4 9 9.5 8.9 9.6 ...
+#>  $ uempmed : num  4.5 4.7 4.6 4.9 4.7 4.8 5.1 4.5 4.1 4.6 ...
+#>  $ unemploy: int  2944 2945 2958 3143 3066 3018 2878 3001 2877 2709 ...
+#>  - attr(*, "plotly_hash")= chr "f638d391dcf53809b8426325a842a091#8"
+```
 
 ---
 
-Talk about pipes!
-
----
-
-```{r}
-p <- plot_ly(z = volcano, type = "surface")
-str(p)
-#> Classes ‘plotly’ and 'data.frame':	0 obs. of  0 variables
-#>  - attr(*, "plotly_hash")= chr "d72417c2f38125f11112cd6591f06f2e#2"
-
+```r
 str(plotly_build(p))
-#> List of 4
-#>  $ data          :List of 1
-#>   ..$ :List of 3
-#>   .. ..$ type      : chr "surface"
-#>   .. ..$ z         : num [1:87, 1:61] 100 101 102 103 104 105 105 106 107 108 ...
-#>   .. ..$ colorscale:'data.frame':	10 obs. of  2 variables:
-#>   .. .. ..$ : num [1:10] 0 0.111 0.222 0.333 0.444 ...
-#>   .. .. ..$ : Factor w/ 10 levels "#1F9D89","#26838E",..: 6 7 5 3 2 1 4 8 9 10
-#>  $ layout        :List of 1
-#>   ..$ zaxis:List of 1
-#>   .. ..$ title: chr "volcano"
+```
+
+```r
+#> List of 2
+#>  $ data  :List of 1
+#>   ..$ :List of 5
+#>   .. ..$ type   : chr "scatter"
+#>   .. ..$ x      : Date[1:478], format: "1967-06-30" ...
+#>   .. ..$ y      : num [1:478] 0.0148 0.0148 0.0149 0.0158 0.0154 ...
+#>  $ layout:List of 2
+#>   ..$ xaxis:List of 1
+#>   .. ..$ title: chr "date"
+#>   ..$ yaxis:List of 1
+#>   .. ..$ title: chr "unemploy/pop"
+```
+
+## Pure functional programming
+
+* A function is _pure_ if:
+    * Output depends solely on input(s).
+    * Has no side-effects (e.g., `library()`, `options()`)
+
+```{r}
+dim(economics)
+e <- transform(economics, rate = unemploy / pop)
+dim(e)
+```
+
+* Pure functions are easy to understand in isolation
+    * no searching for "lingering" variables that may effect output
+* Modern R packages designed to make data analysis easier use this principle: __dplyr__ (Wickham, 2015), __tidyr__ (Wickham, 2015), __broom__ (Robinson, 2015), __ggvis__ (Chang & Wickham, 2015), __rvest__ (Wickham, 2015).
+* Donoho (2015) states: "This effort may have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers."
+
+---
+
+__magrittr's__ `%>%` helps us chain together a sequence of pure functions to __elegantly express complex tasks.__
+
+```{r}
+# f(x, y) becomes x %>% f(y)
+economics %>%
+  transform(rate = unemploy / pop) %>%
+  plot_ly(x = date, y = rate)
 ```
 
 ---
 
+
 ```{r}
-plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
-  add_trace(y = fitted(forecast::Arima(uempmed, c(1,0,0))), mode = "lines") %>%
-### <b>
-  subset(uempmed == max(uempmed)) %>%
-### </b>
-  layout(annotations = list(x = date, y = uempmed, text = "Peak", showarrow = T),
-         title = "Median duration of unemployment (in weeks)", showlegend = F)
+economics %>%
+  transform(rate = unemploy / pop) %>%
+  plot_ly(x = date, y = rate, name = "raw") %>%
+  loess(rate ~ as.numeric(date), data = .) %>%
+  broom::augment() %>%
+  add_trace(y = .fitted, name = "smooth")
 ```
 
-<div align="center">
-  <a href="../wehi/plotly2/"> 
-    <img src="../wehi/plotly2.png" width="1000" height="400" />
-  </a>
-</div>
+---
+
+
+```{r}
+economics %>%
+  transform(rate = unemploy / pop) %>%
+  plot_ly(x = date, y = rate, name = "raw") %>%
+  ### <b>
+  subset(rate == max(rate)) %>%
+  ### </b>
+  layout(annotations = list(x = date, y = rate, text = "Peak", showarrow = T),
+         title = "The U.S. Unemployment Rate")
+```
 
 # Enabling coordinated, linked views
 
@@ -310,10 +360,9 @@ plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
   <img src="../jsm15/react.png" width="700" height="450" />
 </div>
 
-<!--
-* Providing a reusable "closed" template, such as __LDAvis__ is easy. What if users want to extend/remix it?
-* The R package __shiny__ (Cheng et. al., 2015) empowers R users to create web applications with very little startup costs.
-* __shiny__ makes indirect manipulation easy, but coordinating linked views is still hard (especially with smooth transitions between views).
+<!-- TODO
+Expose drawbacks of introducing a server...
+* Maybe show an animint viz here?
 -->
 
 ---
@@ -346,8 +395,8 @@ plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
   <img src="crosstalk.gif" width="900" height="500" />
 </div>
 
-
-## Things I'd like to work on
+<!--
+## Things I'd like to work on before graduation
 
 * Easy:
     * Once plotlyjs has native support for a "selection brush", allow users to access selections in shiny (just like click example).
@@ -355,12 +404,13 @@ plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
 
 * Hard: 
     * Interface for binding to plotly events _without_ JavaScript callbacks (for users that _don't_ know JS).
+-->
 
 ## Timeline
 
 * __December:__ Revise and resubmit book chapter on MLB Pitching Expertise and Evaluation for the Handbook of Statistical Methods for Design and Analysis in Sports, a volume that is planned to be one of the Chapman & Hall/CRC Handbooks of Modern Statistical Methods.
 * __January:__ Revise and submit animint paper.
-* __Feburary:__ Linked views in plotly.
+* __Feburary:__ More support for linked views in plotly.
 * __April:__ Write and submit curating data paper.
 * __June:__ Write and submit interactive web graphics paper.
 * __August:__ Thesis defense.
@@ -370,3 +420,10 @@ plot_ly(economics, x = date, y = uempmed, mode = "markers") %>%
 * __LDAvis__ (Kenny Shirley)
 * __animint__ (Toby Dylan Hocking, Susan VanderPlas, Kevin Ferris, and Tony Tsai)
 * __plotly__ (Toby Dylan Hocking and the [Plotly Team](https://plot.ly/company/team/))
+
+
+<!--
+* Providing a reusable "closed" template, such as __LDAvis__ is easy. What if users want to extend/remix it?
+* The R package __shiny__ (Cheng et. al., 2015) empowers R users to create web applications with very little startup costs.
+* __shiny__ makes indirect manipulation easy, but coordinating linked views is still hard (especially with smooth transitions between views).
+-->

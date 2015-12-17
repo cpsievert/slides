@@ -1,0 +1,219 @@
+{
+ "geoms": {
+ "geom1_point_plot": {
+ "geom": "point",
+"classed": "geom1_point_plot",
+"aes": {
+ "colour": "Species",
+"x": "Sepal.Width",
+"y": "Sepal.Length",
+"showSelectedlegendcolour": "Species" 
+},
+"params": [],
+"types": {
+ "colour": "rgb",
+"x": "numeric",
+"y": "numeric",
+"showSelectedlegendcolour": "factor",
+"PANEL": "integer",
+"fill": "rgb" 
+},
+"PANEL": 1,
+"chunk_order": [],
+"nest_order": [
+ "showSelectedlegendcolour" 
+],
+"subset_order": [
+ "showSelectedlegendcolour" 
+],
+"chunks": 1,
+"total": 1 
+} 
+},
+"selectors": {
+ "Species": {
+ "legend": true,
+"is.variable.value": false,
+"type": "multiple",
+"showSelected": true,
+"selected": [ "setosa", "versicolor", "virginica" ],
+"levels": [ "setosa", "versicolor", "virginica" ],
+"update": [
+ "geom1_point_plot" 
+] 
+} 
+},
+"plots": {
+ "plot": {
+ "panel_margin_lines":   0.25,
+"legend": {
+ "Species": {
+ "guide": "legend",
+"geoms": "point",
+"title": "Species",
+"class": "Species",
+"selector": "Species",
+"is_discrete": true,
+"legend_type": "colour",
+"entries": [
+ {
+ "pointcolour": "#F8766D",
+"pointshape":     16,
+"pointsize":      2,
+"label": "setosa" 
+},
+{
+ "pointcolour": "#00BA38",
+"pointshape":     16,
+"pointsize":      2,
+"label": "versicolor" 
+},
+{
+ "pointcolour": "#619CFF",
+"pointshape":     16,
+"pointsize":      2,
+"label": "virginica" 
+} 
+] 
+} 
+},
+"strips": {
+ "top": [
+ "" 
+],
+"right": [
+ "" 
+],
+"n": {
+ "top":      0,
+"right":      0 
+} 
+},
+"layout": {
+ "PANEL": [ 1 ],
+"ROW": [ 1 ],
+"COL": [ 1 ],
+"SCALE_X": [ 1 ],
+"SCALE_Y": [ 1 ],
+"AXIS_X": [ true ],
+"AXIS_Y": [ true ],
+"coord_fixed": [ false ],
+"width_proportion": [      1 ],
+"height_proportion": [      1 ] 
+},
+"geoms": [
+ "geom1_point_plot" 
+],
+"panel_background": {
+ "fill": "#E5E5E5",
+"colour": "transparent",
+"size":    0.5,
+"linetype":      1 
+},
+"panel_border": [],
+"grid_major": {
+ "colour": "#FFFFFF",
+"size":    0.5,
+"linetype":      1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ 0.045455,
+0.23485,
+0.42424,
+0.61364,
+0.80303,
+0.99242 
+],
+"y": [
+ 0.22222,
+0.47475,
+0.72727,
+0.9798 
+] 
+} 
+},
+"grid_minor": {
+ "colour": "#F2F2F2",
+"size":   0.25,
+"linetype":      1,
+"lineend": "butt",
+"loc": {
+ "x": [
+ 0.14015,
+0.32955,
+0.51894,
+0.70833,
+0.89773 
+],
+"y": [
+ 0.09596,
+0.34848,
+0.60101,
+0.85354 
+] 
+} 
+},
+"axis1": {
+ "x": [
+ 0.045455,
+0.23485,
+0.42424,
+0.61364,
+0.80303,
+0.99242 
+],
+"xlab": [
+ "2.0",
+"2.5",
+"3.0",
+"3.5",
+"4.0",
+"4.5" 
+],
+"xrange": [   1.88,   4.52 ],
+"xline": true,
+"xticks": true,
+"y": [
+ 0.22222,
+0.47475,
+0.72727,
+0.9798 
+],
+"ylab": [
+ "5",
+"6",
+"7",
+"8" 
+],
+"yrange": [   4.12,   8.08 ],
+"yline": true,
+"yticks": true 
+},
+"xtitle": "Sepal.Width",
+"xanchor": "middle",
+"xangle":      0,
+"ytitle": "Sepal.Length",
+"yanchor": "end",
+"yangle":      0,
+"xlabs": [
+ "2.0",
+"2.5",
+"3.0",
+"3.5",
+"4.0",
+"4.5" 
+],
+"ylabs": [
+ "5",
+"6",
+"7",
+"8" 
+],
+"options": {
+ "width":    400,
+"height":    400 
+} 
+} 
+} 
+}
