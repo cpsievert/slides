@@ -13,8 +13,7 @@ css:
 
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(
-  message = FALSE, 
-  fig.align = "center",
+  message = FALSE,
   fig.width = 10,
   fig.height = 4,
   comment = "#>",
@@ -56,19 +55,22 @@ knitr::opts_chunk$set(
 * Why _interactive_ & _dynamic_ graphics? They help us:
     * Find high-dimensional, abstract relationships in data that may otherwise go unnoticed
     * Diagnose models by plotting them in the data space (Wickham, Cook, & Hofmann 2015)
-    * Explore and understand complicated statistical model fit(s) (e.g., __LDAvis__ for LDA topic models)
+    * Explore and understand complicated statistical model fit(s)
     * Communicate/share our work with others in a compelling way
 
 * Why _web-based_?
     * simple to share, portable (web browser)
     * encourages composability
     * guide your audience by providing links to interesting selections/states
+
+* Motivation by example:
+    * Sievert & Shirley (2014) develop an interactive web-based visualization for interpreting LDA topic models.
     
 ## Topic models and LDA
 
 * _Topic models_ are a collection of statistical models with the common goal of finding hidden structure in a collection of text documents.
-* For example,
-    * Given a document discussing 'sports', you're more likely to see the word 'baseball' in that document compared to a document discussing 'music' (and vice-versa for 'guitar').
+* __Basic example__: Given a document discussing 'sports', you're more likely to see the word 'baseball' in that document compared to a document discussing 'music' (and vice-versa for 'guitar').
+* Documents usually don't have a clear "topic", but we can develop models with latent RV to "discover topics". 
 * Latent Dirichlet Allocation (LDA) is a topic model which allows documents to be mixtures of topics (Blei, Ng, Jordan; 2003). 
 
 ---
@@ -161,7 +163,7 @@ The word "win" is probably an abbreviation for "windows" in topic 15. By hoverin
 * Dr. Grant Arndt in the Department of Anthropology at Iowa State University (and his research assistant) are using it as a research aid.
 
 ### Why is this important?
-
+<p></p>
 * We're enabling analysts to gain insight from sophisticated statistical models, communicate their results, and teach others.
 
 ## We need better tools
@@ -174,7 +176,7 @@ The word "win" is probably an abbreviation for "windows" in topic 15. By hoverin
 
 ---
 
-```{r, fig.align = 'center', fig.width = 6}
+```{r, fig.width = 6}
 library(ggplot2)
 p <- qplot(data = iris, x = Sepal.Width, y = Sepal.Length, color = Species)
 p
@@ -187,7 +189,7 @@ library(plotly)
 ggplotly(p)
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.width = 6}
 library(plotly)
 ggplotly(p) %>% layout(hovermode = "closest")
 ```
@@ -325,6 +327,8 @@ economics %>%
 
 ---
 
+---
+
 
 ```{r}
 economics %>%
@@ -337,6 +341,7 @@ economics %>%
 
 ---
 
+---
 
 ```{r}
 economics %>%
