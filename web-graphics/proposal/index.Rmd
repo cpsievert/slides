@@ -77,9 +77,10 @@ knitr::opts_chunk$set(
 
 ### The Generative Model
 <p></p>
-1. For each document $d$, draw topic distribution $\theta_d \sim Dir(\alpha)$
-2. For each topic $k$, draw word distribution $\phi_k \sim Dir(\beta)$
-3. Let $N_d$ be # of words in doc $d$ and $n \in \{1, \dots, N_d\}$. For each word $w_{d, n}$:
+1. Choose # of topics $K$. Let $V$ be # of unique words (vocabulary).
+2. For each document $d$, draw $\theta_d \sim Dir(\alpha)$ (length $K$)
+3. For each topic $k$, draw $\phi_k \sim Dir(\beta)$ (length $V$)
+4. Let $N_d$ be # of words in doc $d$ and $n \in \{1, \dots, N_d\}$. For each word $w_{d, n}$:
     * Draw a (latent) topic, $z_{d, n} \sim Mult(1, \theta_d)$
     * Draw a word given topic, $w_{d, n} \sim Mult(1, \phi_{z_{d, n}})$
     
@@ -94,14 +95,12 @@ knitr::opts_chunk$set(
   <img src="lda.png" width="800" height="400" />
 </div>
 
-In the digital humanities (& elsewhere), LDA is often used to "discover topics" in a large collection of text documents. How are researchers supposed to interpret topics from this model output?
+* In the digital humanities (& elsewhere), LDA is often used to "discover topics" in a large collection of text documents. 
+* How are researchers supposed to interpret topics? We can't possibly examine each pmf.
+* "Overview first, then zoom & filter, then detail on demand" (Schneiderman, 1996)
 
 ## Towards topic interpretation
 
-* Each topic owns a _different_ pmf over a set vocabulary.
-* __<font color="red">Problem</font>:__ We can't possibly examine each pmf. <b>Where should we put our focus?</b>
-
-<ul class="build">
 * Numerous interactive systems allow users to select a topic $z$, then list top ~30 words based on $p(w | z)$ (Gardner et al., 2010; Chaney and Blei, 2012; Snyder et al., 2013).
 * But, words likely to occur overall are also likely to occur for a given topic!
 * Taddy (2011) proposed to rank terms by $lift = p(w | z)/p(w)$
@@ -111,7 +110,6 @@ In the digital humanities (& elsewhere), LDA is often used to "discover topics" 
 $$
 \text{relevance}(\lambda) = \lambda * p(w|z) + (1 - \lambda) * \text{lift}
 $$
-</ul>
 
 ---
 
@@ -172,7 +170,8 @@ The word "win" is probably an abbreviation for "windows" in topic 15. By hoverin
 * People doing data analysis & statistics don't have the time to learn all these tools. In general, how do we best enable them to create their own interactive dynamic web graphics?
 * I've worked on two R packages in this direction: __animint__ and __plotly__.
 * Both can translate __ggplot2__ (Wickham, 2009) graphics to a web-based format (SVG/canvas) and add-on some basic interactive features.
-* Mention the userbase.
+* __ggplot2__ is wildly successful thanks to its implementation of a "Grammar of Graphics" (Wilkinson, 1999) which makes it easy to map data to visual displays.
+* __animint__ extends this grammar in a novel direction to enable a constrained form of "linked views" (Hocking et. al., 2015). 
 
 ---
 
