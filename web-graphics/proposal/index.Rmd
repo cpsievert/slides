@@ -62,11 +62,8 @@ knitr::opts_chunk$set(
     * simple to share, portable (web browser)
     * encourages composability
     * guide your audience by providing links to interesting selections/states
-
-* Motivation by example:
-    * Sievert & Shirley (2014) develop an interactive web-based visualization for interpreting LDA topic models.
     
-## Topic models and LDA
+## An Example: LDA Topic models
 
 * _Topic models_ are a collection of statistical models with the common goal of finding hidden structure in a collection of text documents.
 * __Basic example__: Given a document discussing 'sports', you're more likely to see the word 'baseball' in that document compared to a document discussing 'music' (and vice-versa for 'guitar').
@@ -76,23 +73,21 @@ knitr::opts_chunk$set(
 ---
 
 ### The Generative Model
-<p></p>
 1. Choose # of topics $K$. Let $V$ be # of unique words (vocabulary).
-2. For each document $d$, draw $\theta_d \sim Dir(\alpha)$ (length $K$)
-3. For each topic $k$, draw $\phi_k \sim Dir(\beta)$ (length $V$)
+2. For each document $d \in \{1,...,D\}$, draw $\Theta_d \sim Dir(\alpha)$ where $\Theta_d = (\theta_1, ..., \theta_K) > 0$ and $\sum_{i=1}^K \theta_i = 1$
+3. For each topic $k \in \{1,...,K\}$, draw $\Phi_k \sim Dir(\beta)$ where $\Phi_k = (\phi_1, ..., \phi_V) > 0$ and $\sum_{i=1}^K \phi_i = 1$
 4. Let $N_d$ be # of words in doc $d$ and $n \in \{1, \dots, N_d\}$. For each word $w_{d, n}$:
-    * Draw a (latent) topic, $z_{d, n} \sim Mult(1, \theta_d)$
-    * Draw a word given topic, $w_{d, n} \sim Mult(1, \phi_{z_{d, n}})$
+    * Draw a (latent) topic, $z_{d, n} \sim Mult(1, \Theta_d)$
+    * Draw a word given topic, $w_{d, n} \sim Mult(1, \Phi_{z_{d, n}})$
     
 ### Model fitting
-<p></p>
 * Griffiths & Steyvers (2004) derive a collapsed Gibbs sampler. Implemented in R packages __LDAtools__ (Shirley & Sievert, 2013) and __lda__ (Chang, 2015).
 * Wide array of fitting algorithms available in __topicmodels__ (Grun & Hornik, 2011) and __mallet__ (Mimno, 2013).
 
 ## Model Output
 
 <div align="center">
-  <img src="lda.png" width="800" height="400" />
+  <img src="lda.png" width="800" height="380" />
 </div>
 
 * In the digital humanities (& elsewhere), LDA is often used to "discover topics" in a large collection of text documents. 
@@ -110,6 +105,15 @@ knitr::opts_chunk$set(
 $$
 \text{relevance}(\lambda) = \lambda * p(w|z) + (1 - \lambda) * \text{lift}
 $$
+
+## Choosing lambda
+
+<div align="center">
+  <img src="lambda.png" width="500" height="400" />
+</div>
+
+* We expect the optimal value of $\lambda$ to vary across data.
+* __LDAvis__ allows users to interactively alter rankings by changing $\lambda$
 
 ---
 
@@ -162,18 +166,18 @@ The word "win" is probably an abbreviation for "windows" in topic 15. By hoverin
 
 ### Why is this important?
 <p></p>
-* We're enabling analysts to gain insight from sophisticated statistical models, communicate their results, and teach others.
+* We're helping analysts to gain insight from sophisticated statistical models, communicate their results, and teach others.
 
-## We need better tools
+## Tools for interactive graphics
 
-* Producing interactive and dynamic web graphics from "scratch" (i.e., using HTML/JavaScript/CSS/SVG/d3js) is time-consuming, but very powerful, and flexible.
-* People doing data analysis & statistics don't have the time to learn all these tools. In general, how do we best enable them to create their own interactive dynamic web graphics?
+* Producing interactive and dynamic web graphics from "scratch" is time-consuming, but very powerful, and flexible.
+* How do we best enable statisticians to create their own interactive dynamic web graphics?
 * I've worked on two R packages in this direction: __animint__ and __plotly__.
-* Both can translate __ggplot2__ (Wickham, 2009) graphics to a web-based format (SVG/canvas) and add-on some basic interactive features.
-* __ggplot2__ is wildly successful thanks to its implementation of a "Grammar of Graphics" (Wilkinson, 1999) which makes it easy to map data to visual displays.
+* Both can translate __ggplot2__ (Wickham, 2009) graphics to a web-based format (SVG/canvas) with some basic interactivity.
+* __ggplot2__ is wildly successful thanks to its implementation of a "Grammar of Graphics" (Wilkinson, 1999).
 * __animint__ extends this grammar in a novel direction to enable a constrained form of "linked views" (Hocking et. al., 2015). 
 
----
+## Basic ggplot2 example
 
 ```{r, fig.width = 6}
 library(ggplot2)
@@ -181,7 +185,7 @@ p <- qplot(data = iris, x = Sepal.Width, y = Sepal.Length, color = Species)
 p
 ```
 
----
+## Interactive ggplot2 with plotly
 
 ```{r, eval = FALSE}
 library(plotly)
@@ -193,12 +197,19 @@ library(plotly)
 ggplotly(p) %>% layout(hovermode = "closest")
 ```
 
----
+## Interactive ggplot2 with animint
 
 ```{r}
 library(animint)
 structure(list(plot = p), class = "animint")
 ```
+
+## Translating ggplot2: A high-level view
+
+<div align="center">
+  <img src="workflow.png" width="700" height="400" />
+</div>
+
 
 ---
 
@@ -208,13 +219,6 @@ structure(list(plot = p), class = "animint")
   </a>
 </div>
 
----
-
-Fix typo!!!
-
-<div align="center">
-  <img src="../wehi/workflow.png" width="700" height="400" />
-</div>
 
 ## Translating R graphics to the web
 
@@ -226,39 +230,23 @@ Fix typo!!!
     * To change something that's serialized, you need to re-run R code
     * Hard to extend, customize, and/or add (interactive) features
     
-> - Although pragmatic, if we want a truly interactive web graphics tool, we need a custom interface/language designed for that purpose.
-> - Many relevant R packages provide bindings to JavaScript libraries through a JSON specification (e.g., __ggvis__ (Chang & Wickham, 2015), __rbokeh__ (Hafen & Bokeh team, 2015), __plotly__ (Sievert & Plotly team, 2015))
+> - Although pragmatic, we need a custom interface/language designed for that purpose.
+
 
 ## R Bindings to JavaScript Libraries
 
-* General idea:
-    * Start with a HTML/JS/CSS template
-    * Abstract away data and layout/appearance options
-    * Map a set of R objects to template
-
-```r
-myWrapper <- function(...) {
-  # compute stuff
-  toJSON(list(...))
-}
-```
-
-* The R package [__htmlwidgets__](http://www.htmlwidgets.org/) makes it easy for authors to write bindings that play nicely with shiny/rmarkdown/RStudio. 
-
----
-
 <div align="center">
-  <img src="../wehi/workflow2.png" width="700" height="400" />
+  <img src="workflow2.png" width="700" height="400" />
 </div>
 
----
+## plotly's R interface
 
 ```{r}
 library(plotly)
 plot_ly(economics, x = date, y = unemploy / pop)
 ```
 
----
+## Visual mappings as data attributes
 
 ```r
 p <- plot_ly(economics, x = date, y = unemploy / pop)
@@ -276,7 +264,7 @@ str(p)
 #>  - attr(*, "plotly_hash")= chr "f638d391dcf53809b8426325a842a091#8"
 ```
 
----
+## Rendering the data
 
 ```r
 str(plotly_build(p))
@@ -296,6 +284,13 @@ str(plotly_build(p))
 #>   .. ..$ title: chr "unemploy/pop"
 ```
 
+## Why represent plots as data?
+
+* Thinking about graphics as a mapping from data to visual space is powerful (e.g. __ggplot2__'s grammar of graphics).
+* Allows us to implement a "data-plot-pipeline": a sequence of data manipulations and mappings.
+
+
+<!--
 ## Pure functional programming
 
 * A function is _pure_ if:
@@ -312,12 +307,13 @@ dim(e)
     * no searching for "lingering" variables that may effect output
 * Modern R packages designed to make data analysis easier use this principle: __dplyr__ (Wickham, 2015), __tidyr__ (Wickham, 2015), __broom__ (Robinson, 2015), __ggvis__ (Chang & Wickham, 2015), __rvest__ (Wickham, 2015).
 * Donoho (2015) states: "This effort may have more impact on today’s practice of data analysis than many highly-regarded theoretical statistics papers."
+-->
 
----
+## Data-plot-pipeline: An Example
 
-__magrittr's__ `%>%` helps us chain together a sequence of pure functions to __elegantly express complex tasks.__
+`%>%` is known as a "pipeline operator"
 
-```{r}
+```{r, fig.height = 3.5}
 # f(x, y) becomes x %>% f(y)
 economics %>%
   transform(rate = unemploy / pop) %>%
@@ -326,74 +322,80 @@ economics %>%
 
 ---
 
----
+## Layering model fits
 
-
-```{r}
+```{r, fig.height = 3.5}
 economics %>%
   transform(rate = unemploy / pop) %>%
   plot_ly(x = date, y = rate, name = "raw") %>%
-  loess(rate ~ as.numeric(date), data = .) %>%
+  ### <b>
+  loess(unemploy / pop ~ as.numeric(date), data = .) %>%
   broom::augment() %>%
   add_trace(y = .fitted, name = "smooth")
+  ### </b>
 ```
 
 ---
 
----
+## Adding annotations
 
-```{r}
+```{r, fig.height = 3.5}
 economics %>%
   transform(rate = unemploy / pop) %>%
   plot_ly(x = date, y = rate, name = "raw") %>%
   ### <b>
   subset(rate == max(rate)) %>%
-  ### </b>
   layout(annotations = list(x = date, y = rate, text = "Peak", showarrow = T),
          title = "The U.S. Unemployment Rate")
+  ### </b>
 ```
 
 # Enabling coordinated, linked views
 
----
+## Linked views pipeline
 
 * Coordinated, linked views is an important quality of any interactive statistical graphics system (e.g., cranvas, ggobi, iplots, mondrian, MANET, etc).
 * In order to have linked views, we need a "data pipeline" (Buja et.al, 1988); (Wickham et. al., 2010).
 
+## Linked views pipeline
+
 <div align="center">
-  <img src="../jsm15/react.png" width="700" height="450" />
+  <img src="../jsm15/react.png" width="850" height="550" />
 </div>
 
-<!-- TODO
-Expose drawbacks of introducing a server...
-* Maybe show an animint viz here?
--->
+## An example: animint
 
----
+<div align="center">
+  <a href="../wehi/bank"> 
+    <img src="../wehi/screencast-WorldBank.gif" width="900" height="550" />
+  </a>
+</div>
+
+## Client-server model
 
 <div align="center">
   <img src="server-client.png" width="800" height="600" />
 </div>
 
----
+## Making user-events accessible in R
 
 <div align="center">
-  <img src="shiny.gif" width="900" height="600" />
+  <img src="shiny.gif" width="900" height="500" />
 </div>
 
----
+## An Example: linked brushing
 
 <div align="center">
   <img src="shiny2plotly.gif" width="900" height="500" />
 </div>
 
----
+## An Example: touring w/ linked brush
 
 <div align="center">
   <img src="tourbrush.gif" width="900" height="500" />
 </div>
 
----
+## An Example: Passing plotly events to shiny
 
 <div align="center">
   <img src="crosstalk.gif" width="900" height="500" />
@@ -425,6 +427,9 @@ Expose drawbacks of introducing a server...
 * __animint__ (Toby Dylan Hocking, Susan VanderPlas, Kevin Ferris, and Tony Tsai)
 * __plotly__ (Toby Dylan Hocking and the [Plotly Team](https://plot.ly/company/team/))
 
+
+### Thanks to Di for helping with the proposal
+### Thanks to Heike for her direction, guidance, and support
 
 <!--
 * Providing a reusable "closed" template, such as __LDAvis__ is easy. What if users want to extend/remix it?
